@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Attendance</string>
+    <string name="action_settings">Settings</string>
+    <string name="saved_username" />
+    <string name="saved_password" />
+    <string name="username_key">username</string>
+    <string name="password_key">password</string>
+    <string name="enter_username">Enter username</string>
+    <string name="enter_password">Enter password</string>
+    <string name="preference_file_key">attendace_pref_key</string>
 </resources>
