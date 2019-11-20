@@ -10,4 +10,7 @@ object VolleyService {
 
     val requestQueue: RequestQueue by lazy { Volley.newRequestQueue(context) }
 
+    fun initialize(context: Context) {
+        this.context = context.applicationContext
+    }
 }

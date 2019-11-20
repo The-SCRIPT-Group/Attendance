@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
                 .putExtra("username", username)
                 .putExtra("password", password)
         }
+        finish()
         startActivity(intent)
     }
 }
