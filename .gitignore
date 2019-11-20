@@ -150,3 +150,11 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.gitignore.io/api/gradle,androidstudio
+
+# Ignore keystore and properties
+*.jks
+keystore.properties
+
+# Ignore signed build artifacts
+app/debug/
+app/release/
