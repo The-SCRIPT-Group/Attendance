@@ -7,5 +7,5 @@
     <string name="password_key">password</string>
     <string name="enter_username">Enter username</string>
     <string name="enter_password">Enter password</string>
-    <string name="preference_file_key">attendace_pref_key</string>
+    <string name="preference_file_key">attendance_pref_key</string>
 </resources>

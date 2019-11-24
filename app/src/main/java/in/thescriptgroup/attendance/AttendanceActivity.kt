@@ -1,12 +1,15 @@
 package `in`.thescriptgroup.attendance
 
+import `in`.thescriptgroup.attendance.models.Subject
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonArrayRequest
-import org.json.JSONArray
+import kotlinx.android.synthetic.main.activity_attendance.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.*
 
 class AttendanceActivity : AppCompatActivity() {
 
@@ -16,37 +19,24 @@ class AttendanceActivity : AppCompatActivity() {
         title = "Attendance"
         val username = intent.getStringExtra("username")!!
         val password = intent.getStringExtra("password")!!
-        val url = "https://tsg-erp-api.herokuapp.com/api/attendance"
-        VolleyService.initialize(this)
-        val request = object : JsonArrayRequest(
-            Method.POST, url, null,
-            Response.Listener<JSONArray> { response ->
-                for (i in 0 until response.length()) {
-                    Toast.makeText(
-                        this,
-                        response.getJSONObject(i).getString("subject"),
-                        Toast.LENGTH_SHORT
-                    ).show()
+        val call = ApiClient.client.create(Attendance::class.java).getAttendance(username, password)
+        call.enqueue(object : Callback<List<Subject>> {
+            override fun onResponse(call: Call<List<Subject>>, response: Response<List<Subject>>) {
+                Objects.requireNonNull<List<Subject>>(response.body(), "Response body is null")
+                val attendanceData: List<Subject> = response.body()!!
+                attendanceData.forEach {
+                    try {
+                        attendanceView.append("${it.type} - ${it.name} \t ${String.format("%.2f", (it.present / it.total.toDouble()) * 100)}%\n")
+                    } catch (e: ArithmeticException) {
+                    }
                 }
-            },
-            Response.ErrorListener {
-                Toast.makeText(this, "That didn't work!", Toast.LENGTH_SHORT).show()
-            }) {
-            override fun getParams(): MutableMap<String, String> {
-                val params = HashMap<String, String>()
-                params["username"] = username
-                params["password"] = password
-                params["desired_attendance"] = "100"
-                return params
             }
 
-            override fun getHeaders(): MutableMap<String, String> {
-                val headers = HashMap<String, String>()
-                headers["Content-Type"] = "application/text"
-                return headers
+            override fun onFailure(call: Call<List<Subject>>, t: Throwable) {
+                Log.v("onFailure", t.message!!)
+                Toast.makeText(this@AttendanceActivity, "Error occurred!", Toast.LENGTH_SHORT)
+                    .show()
             }
-        }
-        VolleyService.requestQueue.add(request)
-        VolleyService.requestQueue.start()
+        })
     }
 }
