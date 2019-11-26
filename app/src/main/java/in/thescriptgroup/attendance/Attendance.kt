@@ -30,8 +30,7 @@ interface Attendance {
     @FormUrlEncoded
     @POST("attendance")
     fun getAttendance(
-        @Field("username")
-        username: String, @Field("password")
-        password: String
+        @Field("username") username: String,
+        @Field("password") password: String
     ): Call<List<Subject>>
 }
