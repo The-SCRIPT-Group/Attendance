@@ -36,6 +36,7 @@ class AttendanceActivity : AppCompatActivity() {
                     Objects.requireNonNull<List<Subject>>(response.body(), "Response body is null")
                     val attendanceData: List<Subject> = response.body()!!
                     progress.visibility = View.GONE
+                    attendanceView.text = ""
 
                     attendanceData.forEach {
                         try {
