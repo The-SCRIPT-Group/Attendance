@@ -26,7 +26,7 @@ class AttendanceActivity : AppCompatActivity() {
                 val attendanceData: List<Subject> = response.body()!!
                 attendanceData.forEach {
                     try {
-                        attendanceView.append("${it.type} - ${it.name} \t ${String.format("%.2f", it.percent)}%\n")
+                        attendanceView.append("${it.type} - ${it.name} \t ${String.format("%.2f", (it.present / it.total.toDouble()) * 100)}%\n")
                     } catch (e: ArithmeticException) {
                     }
                 }

@@ -10,7 +10,4 @@ data class Subject(
     val type: String,
     val present: Int,
     val total: Int
-) {
-    val missed: Int = total - present
-    val percent: Double = (present / total.toDouble()) * 100
-}
+)
