@@ -51,6 +51,7 @@ class AttendanceActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<List<Subject>>, t: Throwable) {
+                    progress.visibility = View.GONE
                     Log.v("onFailure", t.message!!)
                     Toast.makeText(this@AttendanceActivity, "Error occurred!", Toast.LENGTH_SHORT)
                         .show()
