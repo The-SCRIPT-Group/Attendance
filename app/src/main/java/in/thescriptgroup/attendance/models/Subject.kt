@@ -11,3 +11,5 @@ data class Subject(
     val present: Int,
     val total: Int
 )
+
+class SubjectList : ArrayList<Subject>() {}

@@ -22,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
             val password = password.text.toString()
 
             if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please enter the details!", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Please enter the details!", Toast.LENGTH_SHORT).show()
             } else {
                 with(sharedPref.edit()) {
                     putString(getString(R.string.username_key), username)
@@ -34,7 +34,6 @@ class LoginActivity : AppCompatActivity() {
                 intent.putExtra("password", password)
                 finish()
                 startActivity(intent)
-
             }
         }
     }
