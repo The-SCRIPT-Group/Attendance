@@ -9,7 +9,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 object ApiClient {
-    private const val BASE_URL = "https://tsg-erp-api.herokuapp.com/api/"
+    private const val BASE_URL = "https://poseidon.thescriptgroup.in/api/"
     private var retrofit: Retrofit? = null
 
     val client: Retrofit
