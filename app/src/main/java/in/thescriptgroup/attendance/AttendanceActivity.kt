@@ -46,6 +46,7 @@ class AttendanceActivity : AppCompatActivity() {
                 ) {
                     Objects.requireNonNull<List<Subject>>(response.body(), "Response body is null")
                     val attendanceData: List<Subject> = response.body()!!
+                    Log.v("Stuff", response.body().toString())
                     val attendanceStr = gson.toJson(attendanceData)
                     val timestamp = Calendar.getInstance().time.toString()
                     progress.visibility = View.GONE
@@ -75,18 +76,15 @@ class AttendanceActivity : AppCompatActivity() {
             gson.fromJson(attendanceStr, SubjectList::class.java).toList()
 
         val subjectTypes = mapOf(
-            "TH" to "Theory",
-            "PR" to "Practical",
-            "TU" to "Tutorial"
+            "th" to "Theory",
+            "pr" to "Practical",
+            "tu" to "Tutorial"
         )
 
         attendanceView.text = getString(R.string.last_checked, timestamp)
         attendance.forEach {
             attendanceView.append(
-                "${subjectTypes[it.type]} - ${it.name}\t${String.format(
-                    "%.2f",
-                    (it.present / it.total.toDouble()) * 100
-                )}%\t${it.present}/${it.total}\n"
+                "${it.name}\t\t${it.th_present}/${it.th_total}\n"
             )
         }
     }
