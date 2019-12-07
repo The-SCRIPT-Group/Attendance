@@ -84,7 +84,14 @@ class AttendanceActivity : AppCompatActivity() {
         attendanceView.text = getString(R.string.last_checked, timestamp)
         attendance.forEach {
             attendanceView.append(
-                "${it.name}\t\t${it.th_present}/${it.th_total}\n"
+                "${it.name}\n" +
+                        "Theory\n" +
+                        "${it.th_present}/${it.th_total}\n" +
+                        "Practical\n" +
+                        "${it.pr_present}/${it.pr_total}\n" +
+                        "Tutorial\n" +
+                        "${it.tu_present}/${it.tu_total}"
+
             )
         }
     }
