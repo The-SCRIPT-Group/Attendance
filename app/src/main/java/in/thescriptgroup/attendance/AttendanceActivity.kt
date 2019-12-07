@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_attendance.*
 import retrofit2.Call
@@ -25,6 +27,9 @@ class AttendanceActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_attendance)
+
+        // val context: Context = this
+
         title = "Attendance"
         sharedPref = this.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
@@ -75,24 +80,14 @@ class AttendanceActivity : AppCompatActivity() {
         val attendance: List<Subject> =
             gson.fromJson(attendanceStr, SubjectList::class.java).toList()
 
-        val subjectTypes = mapOf(
-            "th" to "Theory",
-            "pr" to "Practical",
-            "tu" to "Tutorial"
-        )
 
         attendanceView.text = getString(R.string.last_checked, timestamp)
-        attendance.forEach {
-            attendanceView.append(
-                "${it.name}\n" +
-                        "Theory\n" +
-                        "${it.th_present}/${it.th_total}\n" +
-                        "Practical\n" +
-                        "${it.pr_present}/${it.pr_total}\n" +
-                        "Tutorial\n" +
-                        "${it.tu_present}/${it.tu_total}"
-
-            )
+        val recyclerView = findViewById<RecyclerView>(R.id.attendanceRecycler)
+        recyclerView.apply {
+            this.layoutManager = LinearLayoutManager(context)
+            this.adapter = ListAdapter(attendance)
         }
+
+
     }
 }
