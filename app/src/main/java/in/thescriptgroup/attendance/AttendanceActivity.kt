@@ -52,7 +52,6 @@ class AttendanceActivity : AppCompatActivity() {
                 ) {
                     Objects.requireNonNull<List<Subject>>(response.body(), "Response body is null")
                     val attendanceData: List<Subject> = response.body()!!
-                    Log.v("Stuff", response.body().toString())
                     val attendanceStr = gson.toJson(attendanceData)
                     val timestamp = Calendar.getInstance().time.toString()
                     progress.visibility = View.GONE
@@ -87,15 +86,13 @@ class AttendanceActivity : AppCompatActivity() {
         }
         attendance.add(total)
 
-
         attendanceView.text = getString(R.string.last_checked, timestamp)
-        val recyclerView = findViewById<RecyclerView>(R.id.attendanceRecycler)
-        recyclerView.apply {
+        attendanceRecycler.apply {
             this.layoutManager = LinearLayoutManager(context)
             this.adapter = ListAdapter(attendance)
         }
 
-        recyclerView.affectOnItemClicks { position, _ ->
+        attendanceRecycler.affectOnItemClicks { position, _ ->
             val subject = attendance[position]
             val customDialog = AlertDialog.Builder(this)
             var message = "Attended :-\n"
