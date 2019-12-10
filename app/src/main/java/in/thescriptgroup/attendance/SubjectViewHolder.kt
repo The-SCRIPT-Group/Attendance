@@ -1,7 +1,7 @@
 package `in`.thescriptgroup.attendance
 
 import `in`.thescriptgroup.attendance.models.Subject
-import android.util.Log
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -20,6 +20,7 @@ class SubjectViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         pracView = itemView.findViewById(R.id.prac_perc)
     }
 
+    @SuppressLint("SetTextI18n")
     fun bind(subject: Subject) {
         subjectView?.text = subject.name
         if (subject.th_total != 0)
@@ -27,21 +28,34 @@ class SubjectViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
                 "%.2f",
                 (subject.th_present / subject.th_total.toDouble()) * 100
             )}%"
+        var pracs = ""
         if (subject.pr_total != 0)
-            pracView?.text = "Practical: ${String.format(
+            pracs = "Practical: ${String.format(
                 "%.2f",
                 (subject.pr_present / subject.pr_total.toDouble()) * 100
-            )}%"
+            )}%\n"
         if (subject.tu_total != 0)
-            pracView?.text = "Tutorial: ${String.format(
+            pracs += "Tutorial: ${String.format(
                 "%.2f",
                 (subject.tu_present / subject.tu_total.toDouble()) * 100
             )}%"
+        pracView?.text = pracs
     }
 }
 
+/*
+fun getName(type: String): String {
+    when (type) {
+        "th_present" -> return "Theory"
+        "pr_present" -> return "Practical"
+        "tu_present" -> return "Tutorial"
+    }
+    return ""
+}*/
 
-class ListAdapter(private val list: List<Subject>) : RecyclerView.Adapter<SubjectViewHolder>() {
+
+class ListAdapter(private val list: ArrayList<Subject>) :
+    RecyclerView.Adapter<SubjectViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -49,8 +63,7 @@ class ListAdapter(private val list: List<Subject>) : RecyclerView.Adapter<Subjec
     }
 
     override fun onBindViewHolder(holder: SubjectViewHolder, position: Int) {
-        val subject: Subject = list[position]
-        holder.bind(subject)
+        holder.bind(list[position])
     }
 
     override fun getItemCount(): Int = list.size

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -77,8 +78,17 @@ class AttendanceActivity : AppCompatActivity() {
         if (timestamp == "") return
 
         val attendanceStr = sharedPref.getString(getString(R.string.attendance_key), "")
-        val attendance: List<Subject> =
-            gson.fromJson(attendanceStr, SubjectList::class.java).toList()
+        val attendance: ArrayList<Subject> =
+            gson.fromJson(attendanceStr, SubjectList::class.java)
+
+        var total: Subject? = null
+        total?.name = "Total"
+        attendance.forEach {
+            total?.plus(it)
+        }
+        if (total != null) {
+            attendance.add(total)
+        }
 
 
         attendanceView.text = getString(R.string.last_checked, timestamp)
@@ -88,6 +98,41 @@ class AttendanceActivity : AppCompatActivity() {
             this.adapter = ListAdapter(attendance)
         }
 
+        recyclerView.affectOnItemClicks { position, _ ->
+            val subject = attendance[position]
+            val customDialog = AlertDialog.Builder(this)
+            var message = "Attended :-\n"
 
+            if (subject.th_total != 0) {
+                message += "\tTheory: ${subject.th_present} / ${subject.th_total} ( ${String.format(
+                    "%.2f",
+                    (subject.th_present / subject.th_total.toDouble()) * 100
+                )}% )\n"
+            }
+            if (subject.pr_total != 0) {
+                message += "\tPractical: ${subject.pr_present} / ${subject.pr_total} ( ${String.format(
+                    "%.2f",
+                    (subject.pr_present / subject.pr_total.toDouble()) * 100
+                )}% )\n"
+            }
+            if (subject.tu_total != 0) {
+                message += "\tTutorial: ${subject.tu_present} / ${subject.tu_total} ( ${String.format(
+                    "%.2f",
+                    (subject.tu_present / subject.tu_total.toDouble()) * 100
+                )}% )\n"
+            }
+
+            customDialog
+                .setMessage(message)
+                .setNeutralButton("Dismiss") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .setPositiveButton("Calculate Lectures") { dialog, _ ->
+
+                }
+            val dialog = customDialog.create()
+            dialog.setTitle(subject.name)
+            dialog.show()
+        }
     }
 }

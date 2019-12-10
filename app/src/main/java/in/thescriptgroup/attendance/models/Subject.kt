@@ -6,16 +6,25 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Subject(
     @SerializedName("subject")
-    val name: String,
+    var name: String,
     @SerializedName("th_present")
-    val th_present: Int,
+    var th_present: Int,
     @SerializedName("th_total")
-    val th_total: Int,
+    var th_total: Int,
 
-    val pr_present: Int,
-    val pr_total: Int,
-    val tu_present: Int,
-    val tu_total: Int
-)
+    var pr_present: Int,
+    var pr_total: Int,
+    var tu_present: Int,
+    var tu_total: Int
+) {
+    operator fun plus(subject: Subject) {
+        this.th_present += subject.th_present
+        this.th_total += subject.th_total
+        this.pr_present += subject.pr_present
+        this.pr_total += subject.pr_total
+        this.tu_present += subject.tu_present
+        this.tu_present += subject.tu_present
+    }
+}
 
 class SubjectList : ArrayList<Subject>() {}
