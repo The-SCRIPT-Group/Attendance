@@ -25,7 +25,7 @@ data class Subject(
         this.pr_present += subject.pr_present
         this.pr_total += subject.pr_total
         this.tu_present += subject.tu_present
-        this.tu_present += subject.tu_present
+        this.tu_total += subject.tu_total
     }
 }
 
