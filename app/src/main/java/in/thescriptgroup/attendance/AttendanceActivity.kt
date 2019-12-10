@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_attendance.*
 import retrofit2.Call
@@ -28,8 +27,6 @@ class AttendanceActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_attendance)
-
-        // val context: Context = this
 
         title = "Attendance"
         sharedPref = this.getSharedPreferences(
@@ -80,7 +77,7 @@ class AttendanceActivity : AppCompatActivity() {
         val attendance: ArrayList<Subject> =
             gson.fromJson(attendanceStr, SubjectList::class.java)
 
-        var total = Subject(name="Total")
+        var total = Subject(name = "Total")
         attendance.forEach {
             total.plus(it)
         }

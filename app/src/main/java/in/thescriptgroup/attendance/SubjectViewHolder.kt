@@ -43,17 +43,6 @@ class SubjectViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     }
 }
 
-/*
-fun getName(type: String): String {
-    when (type) {
-        "th_present" -> return "Theory"
-        "pr_present" -> return "Practical"
-        "tu_present" -> return "Tutorial"
-    }
-    return ""
-}*/
-
-
 class ListAdapter(private val list: ArrayList<Subject>) :
     RecyclerView.Adapter<SubjectViewHolder>() {
 
