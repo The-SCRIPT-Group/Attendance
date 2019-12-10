@@ -17,6 +17,8 @@ data class Subject(
     var tu_present: Int,
     var tu_total: Int
 ) {
+    constructor(name: String) : this(name, 0, 0, 0, 0, 0, 0)
+
     operator fun plus(subject: Subject) {
         this.th_present += subject.th_present
         this.th_total += subject.th_total

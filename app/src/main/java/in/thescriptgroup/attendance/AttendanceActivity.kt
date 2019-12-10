@@ -81,14 +81,11 @@ class AttendanceActivity : AppCompatActivity() {
         val attendance: ArrayList<Subject> =
             gson.fromJson(attendanceStr, SubjectList::class.java)
 
-        var total: Subject? = null
-        total?.name = "Total"
+        var total = Subject(name="Total")
         attendance.forEach {
-            total?.plus(it)
+            total.plus(it)
         }
-        if (total != null) {
-            attendance.add(total)
-        }
+        attendance.add(total)
 
 
         attendanceView.text = getString(R.string.last_checked, timestamp)
