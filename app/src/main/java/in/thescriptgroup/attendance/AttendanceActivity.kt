@@ -88,6 +88,8 @@ class AttendanceActivity : AppCompatActivity() {
             this.layoutManager = LinearLayoutManager(context)
             this.adapter = ListAdapter(attendance)
         }
+        attendanceRecycler.adapter?.notifyDataSetChanged()
+
 
         attendanceRecycler.affectOnItemClicks { position, _ ->
             val subject = attendance[position]
