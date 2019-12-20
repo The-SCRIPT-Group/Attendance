@@ -32,7 +32,7 @@ class AttendanceActivity : AppCompatActivity() {
         sharedPref = this.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
-        Toast.makeText(this, "Swipe to refresh attendance!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Pull down to refresh attendance!", Toast.LENGTH_SHORT).show()
         updateAttendance()
 
         swipeContainer.setOnRefreshListener {
