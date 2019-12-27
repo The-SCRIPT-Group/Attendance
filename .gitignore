@@ -1,4 +1,3 @@
-
 # Created by https://www.gitignore.io/api/gradle,androidstudio
 # Edit at https://www.gitignore.io/?templates=gradle,androidstudio
 
@@ -102,6 +101,7 @@ obj/
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 .idea/assetWizardSettings.xml
+.idea/jarRepositories.xml
 
 # OS-specific files
 .DS_Store
@@ -158,3 +158,6 @@ keystore.properties
 # Ignore signed build artifacts
 app/debug/
 app/release/
+
+# Firebase config
+app/google-services.json
