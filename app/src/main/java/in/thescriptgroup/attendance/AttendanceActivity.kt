@@ -3,6 +3,7 @@ package `in`.thescriptgroup.attendance
 import `in`.thescriptgroup.attendance.models.Subject
 import `in`.thescriptgroup.attendance.models.SubjectList
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -33,7 +34,7 @@ class AttendanceActivity : AppCompatActivity() {
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
         Toast.makeText(this, "Pull down to refresh attendance!", Toast.LENGTH_SHORT).show()
-        updateAttendance()
+        updateAttendance(update = false)
 
         swipeContainer.setOnRefreshListener {
 
@@ -49,12 +50,29 @@ class AttendanceActivity : AppCompatActivity() {
                 ) {
                     Objects.requireNonNull<List<Subject>>(response.body(), "Response body is null")
                     val attendanceData: List<Subject> = response.body()!!
-                    if (attendanceData[0].response != "") {
+                    val err: String? = attendanceData[0].response
+                    if (err != null) {
                         Toast.makeText(
                             this@AttendanceActivity,
-                            attendanceData[0].response,
+                            err,
                             Toast.LENGTH_SHORT
                         ).show()
+                        if (err == "Wrong credentials!") {
+                            with(sharedPref.edit()) {
+                                putString(getString(R.string.username_key), "")
+                                putString(getString(R.string.password_key), "")
+                                putString(getString(R.string.attendance_key), "")
+                                putString(getString(R.string.timestamp_key), "")
+                                commit()
+                            }
+                            startActivity(
+                                Intent(
+                                    this@AttendanceActivity,
+                                    LoginActivity::class.java
+                                )
+                            )
+                            finish()
+                        }
                     } else {
                         val attendanceStr = gson.toJson(attendanceData)
                         val timestamp = Calendar.getInstance().time.toString()
@@ -70,6 +88,14 @@ class AttendanceActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<List<Subject>>, t: Throwable) {
                     Log.v("onFailure", t.message!!)
+                    if (t.message == "timeout") {
+                        Toast.makeText(
+                            this@AttendanceActivity,
+                            "Connection timed out!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    swipeContainer.isRefreshing = false
                 }
             })
         }
@@ -81,7 +107,7 @@ class AttendanceActivity : AppCompatActivity() {
         )
     }
 
-    fun updateAttendance() {
+    fun updateAttendance(update: Boolean = true) {
         val timestamp = sharedPref.getString(getString(R.string.timestamp_key), "")!!
 
         if (timestamp == "") return
@@ -95,6 +121,10 @@ class AttendanceActivity : AppCompatActivity() {
             total.plus(it)
         }
         attendance.add(total)
+
+        if (update) {
+            Toast.makeText(this@AttendanceActivity, "Updated attendance!", Toast.LENGTH_SHORT).show()
+        }
 
         attendanceView.text = getString(R.string.last_checked, timestamp)
         attendanceRecycler.apply {
