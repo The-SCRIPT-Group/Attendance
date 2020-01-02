@@ -15,9 +15,11 @@ data class Subject(
     var pr_present: Int,
     var pr_total: Int,
     var tu_present: Int,
-    var tu_total: Int
+    var tu_total: Int,
+
+    val response: String
 ) {
-    constructor(name: String) : this(name, 0, 0, 0, 0, 0, 0)
+    constructor(name: String) : this(name, 0, 0, 0, 0, 0, 0, "")
 
     operator fun plus(subject: Subject) {
         this.th_present += subject.th_present
@@ -29,4 +31,4 @@ data class Subject(
     }
 }
 
-class SubjectList : ArrayList<Subject>() {}
+class SubjectList : ArrayList<Subject>()
