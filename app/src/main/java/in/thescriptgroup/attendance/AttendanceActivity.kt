@@ -1,5 +1,6 @@
 package `in`.thescriptgroup.attendance
 
+import `in`.thescriptgroup.attendance.models.ErrorMessage
 import `in`.thescriptgroup.attendance.models.Subject
 import `in`.thescriptgroup.attendance.models.SubjectList
 import android.content.Context
@@ -48,15 +49,27 @@ class AttendanceActivity : AppCompatActivity() {
                     response: Response<List<Subject>>
                 ) {
                     Objects.requireNonNull<List<Subject>>(response.body(), "Response body is null")
-                    val attendanceData: List<Subject> = response.body()!!
-                    val attendanceStr = gson.toJson(attendanceData)
-                    val timestamp = Calendar.getInstance().time.toString()
-                    with(sharedPref.edit()) {
-                        putString(getString(R.string.attendance_key), attendanceStr)
-                        putString(getString(R.string.timestamp_key), timestamp)
-                        commit()
+                    val err = ErrorMessage(response.body())
+                    if (err.response == "ERP is down!") {
+                        Toast.makeText(this@AttendanceActivity, err.response, Toast.LENGTH_SHORT)
+                            .show()
+                    } else if (err.response == "Error") {
+                        Toast.makeText(
+                            this@AttendanceActivity,
+                            "Unknown error occurred!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        val attendanceData: List<Subject> = response.body()!!
+                        val attendanceStr = gson.toJson(attendanceData)
+                        val timestamp = Calendar.getInstance().time.toString()
+                        with(sharedPref.edit()) {
+                            putString(getString(R.string.attendance_key), attendanceStr)
+                            putString(getString(R.string.timestamp_key), timestamp)
+                            commit()
+                        }
+                        updateAttendance()
                     }
-                    updateAttendance()
                     swipeContainer.isRefreshing = false
                 }
 
