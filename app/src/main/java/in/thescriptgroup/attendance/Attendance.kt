@@ -1,12 +1,14 @@
 package `in`.thescriptgroup.attendance
 
 import `in`.thescriptgroup.attendance.models.Subject
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
+import java.util.concurrent.TimeUnit
 
 object ApiClient {
     private const val BASE_URL = "https://poseidon.thescriptgroup.in/api/"
@@ -18,6 +20,7 @@ object ApiClient {
                 retrofit = Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
+                    .client(OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS).build())
                     .build()
             }
             // If retrofit is null we build the object above
