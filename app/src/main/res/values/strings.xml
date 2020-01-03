@@ -11,4 +11,13 @@
     <string name="attendance_key">attendance_key</string>
     <string name="timestamp_key">timestamp_key</string>
     <string name="last_checked">Last updated at %1$s!\n</string>
-</resources>
+    <string name="desired_attendance_key">desired_attendance</string>
+    <string name="settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="settings_header">Settings</string>
+
+    <!-- Preferences -->
+    <string name="set_desired_attendance">Set the desired attendance for calculation</string>
+    </resources>

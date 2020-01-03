@@ -1,0 +1,14 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/settings_header">
+
+        <EditTextPreference
+            app:key="desired_attendance"
+            app:title="@string/set_desired_attendance"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="75" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
