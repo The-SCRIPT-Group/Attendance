@@ -31,7 +31,6 @@ class AttendanceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_attendance)
 
-        title = "Attendance"
         sharedPref = this.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
@@ -146,7 +145,8 @@ class AttendanceActivity : AppCompatActivity() {
         attendance.add(total)
 
         if (update) {
-            Toast.makeText(this@AttendanceActivity, "Updated attendance!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@AttendanceActivity, "Updated attendance!", Toast.LENGTH_SHORT)
+                .show()
         }
 
         attendanceView.text = getString(R.string.last_checked, timestamp)

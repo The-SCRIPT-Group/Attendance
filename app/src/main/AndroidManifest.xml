@@ -14,8 +14,12 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name=".AttendanceActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".AttendanceActivity"
+            android:label="@string/title_attendance" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_login" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
