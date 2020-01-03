@@ -53,11 +53,10 @@ class SettingsActivity : AppCompatActivity() {
             val sharedPref = activity!!.getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE
             )
+            val editTextPreference =
+                preferenceManager.findPreference<EditTextPreference>("desired_attendance")!!
             when (preference) {
-                preferenceManager.findPreference<EditTextPreference>("desired_attendance") -> {
-                    val editTextPreference =
-                        preferenceManager.findPreference<EditTextPreference>("desired_attendance")!!
-                    val oldValue = editTextPreference.text.toInt()
+                editTextPreference -> {
                     val value = newValue.toString().toInt()
                     if (value < 0 || value > 100) {
                         Toast.makeText(
@@ -66,19 +65,19 @@ class SettingsActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         return false
-                        //editTextPreference.text = oldValue.toString()
                     }
-                    if (oldValue != value) {
-                        with(sharedPref!!.edit()) {
-                            putInt(getString(R.string.desired_attendance_key), value)
-                            commit()
-                        }
-                        Toast.makeText(
-                            activity,
-                            "Desired attendance set to $value!",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                    if (editTextPreference.text.toInt() == value) {
+                        return false
                     }
+                    with(sharedPref!!.edit()) {
+                        putInt(getString(R.string.desired_attendance_key), value)
+                        commit()
+                    }
+                    Toast.makeText(
+                        activity,
+                        "Desired attendance set to $value!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return true
                 }
                 else -> {
