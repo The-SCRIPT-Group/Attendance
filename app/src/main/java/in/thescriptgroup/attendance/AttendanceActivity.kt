@@ -19,6 +19,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import kotlin.collections.HashMap
+import kotlin.math.abs
 
 
 class AttendanceActivity : AppCompatActivity() {
@@ -180,14 +182,18 @@ class AttendanceActivity : AppCompatActivity() {
                     (subject.tu_present / subject.tu_total.toDouble()) * 100
                 )}% )\n"
             }
+            message += "\n\n"
+
+            val desired = sharedPref.getInt(getString(R.string.desired_attendance_key), 75)
+            val data = subject.calculateLectures(desired)
+            for (key in data.keys) {
+                message += if (data[key]!! < 0) "You need to attend ${abs(data[key]!!)} $key \n" else "You can bunk ${data[key]} $key \n"
+            }
 
             customDialog
                 .setMessage(message)
                 .setNeutralButton("Dismiss") { dialog, _ ->
                     dialog.cancel()
-                }
-                .setPositiveButton("Calculate Lectures") { dialog, _ ->
-
                 }
             val dialog = customDialog.create()
             dialog.setTitle(subject.name)
