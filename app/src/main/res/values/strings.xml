@@ -18,8 +18,12 @@
     <string name="title_attendance">Check Attendance</string>
 
     <!-- Preference Titles -->
-    <string name="settings_header">Settings</string>
+    <string name="attendance_settings_header">Attendance</string>
+    <string name="other_settings_header">Other</string>
+    <string name="version_header">Version</string>
+    <string name="logout_header">Logout</string>
 
     <!-- Preferences -->
     <string name="set_desired_attendance">Set the desired attendance for calculation</string>
-    </resources>
+    <string name="app_version">4.20.69</string>
+</resources>
