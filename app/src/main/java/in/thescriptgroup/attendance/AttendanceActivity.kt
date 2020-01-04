@@ -19,7 +19,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.collections.HashMap
 import kotlin.math.abs
 
 
@@ -140,7 +139,7 @@ class AttendanceActivity : AppCompatActivity() {
         val attendance: ArrayList<Subject> =
             gson.fromJson(attendanceStr, SubjectList::class.java)
 
-        var total = Subject(name = "Total")
+        val total = Subject(name = "Total")
         attendance.forEach {
             total.plus(it)
         }
@@ -187,7 +186,12 @@ class AttendanceActivity : AppCompatActivity() {
             val desired = sharedPref.getInt(getString(R.string.desired_attendance_key), 75)
             val data = subject.calculateLectures(desired)
             for (key in data.keys) {
-                message += if (data[key]!! < 0) "You need to attend ${abs(data[key]!!)} $key \n" else "You can bunk ${data[key]} $key \n"
+                message += "You " +
+                        when {
+                            data[key]!! < 0 -> "need to attend ${abs(data[key]!!)}"
+                            data[key]!! > 0 -> "can bunk ${data[key]}"
+                            else -> "cannot not bunk any"
+                        } + " $key \n"
             }
 
             customDialog

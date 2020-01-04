@@ -1,10 +1,5 @@
 package `in`.thescriptgroup.attendance.models
 
-import `in`.thescriptgroup.attendance.Attendance
-import `in`.thescriptgroup.attendance.R
-import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
@@ -36,24 +31,24 @@ data class Subject(
     }
 
     fun calculateLectures(desired: Int): HashMap<String, Int> {
-        var data: HashMap<String, Int> = hashMapOf()
+        val data: HashMap<String, Int> = hashMapOf()
 
         if (this.th_total != 0) {
-            data["Theorylectures"] =
-                getlectureCount(this.th_present, this.th_total, desired)
+            data["Lectures"] =
+                getLectureCount(this.th_present, this.th_total, desired)
         }
         if (this.pr_total != 0) {
             data["Practicals"] =
-                getlectureCount(this.pr_present, this.pr_total, desired)
+                getLectureCount(this.pr_present, this.pr_total, desired)
         }
         if (this.tu_total != 0) {
             data["Tutorials"] =
-                getlectureCount(this.tu_present, this.tu_total, desired)
+                getLectureCount(this.tu_present, this.tu_total, desired)
         }
         return data
     }
 
-    private fun getlectureCount(
+    private fun getLectureCount(
         present: Int,
         total: Int,
         desired: Int

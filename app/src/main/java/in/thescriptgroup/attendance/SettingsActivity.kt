@@ -1,6 +1,8 @@
 package `in`.thescriptgroup.attendance
 
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
@@ -35,11 +37,19 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
+    class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener,
+        Preference.OnPreferenceClickListener {
+        lateinit var desiredAttendance: EditTextPreference
+        lateinit var logout: Preference
+        lateinit var sharedPref: SharedPreferences
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
-            val desiredAttendance =
-                preferenceManager.findPreference<EditTextPreference>("desired_attendance")!!
+            sharedPref = activity!!.getSharedPreferences(
+                getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            )
+            desiredAttendance =
+                preferenceManager.findPreference("desired_attendance")!!
             desiredAttendance.setOnBindEditTextListener { editText ->
                 editText.inputType =
                     InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED
@@ -47,16 +57,14 @@ class SettingsActivity : AppCompatActivity() {
                 editText.hint = "Between 0 - 100"
             }
             desiredAttendance.onPreferenceChangeListener = this
+            logout = preferenceManager.findPreference("logout")!!
+            logout.onPreferenceClickListener = this
         }
 
         override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
-            val sharedPref = activity!!.getSharedPreferences(
-                getString(R.string.preference_file_key), Context.MODE_PRIVATE
-            )
-            val editTextPreference =
-                preferenceManager.findPreference<EditTextPreference>("desired_attendance")!!
+
             when (preference) {
-                editTextPreference -> {
+                desiredAttendance -> {
                     val value = newValue.toString().toInt()
                     if (value < 0 || value > 100) {
                         Toast.makeText(
@@ -66,10 +74,10 @@ class SettingsActivity : AppCompatActivity() {
                         ).show()
                         return false
                     }
-                    if (editTextPreference.text.toInt() == value) {
+                    if (desiredAttendance.text.toInt() == value) {
                         return false
                     }
-                    with(sharedPref!!.edit()) {
+                    with(sharedPref.edit()) {
                         putInt(getString(R.string.desired_attendance_key), value)
                         commit()
                     }
@@ -78,6 +86,33 @@ class SettingsActivity : AppCompatActivity() {
                         "Desired attendance set to $value!",
                         Toast.LENGTH_SHORT
                     ).show()
+                    return true
+                }
+
+                else -> {
+                    return false
+                }
+            }
+        }
+
+        override fun onPreferenceClick(preference: Preference?): Boolean {
+            when (preference) {
+                logout -> {
+                    with(sharedPref.edit()) {
+                        putString(getString(R.string.username_key), "")
+                        putString(getString(R.string.password_key), "")
+                        putString(getString(R.string.attendance_key), "")
+                        putString(getString(R.string.timestamp_key), "")
+                        commit()
+                    }
+                    Toast.makeText(activity, "Logging out!", Toast.LENGTH_SHORT).show()
+                    startActivity(
+                        Intent(
+                            activity,
+                            LoginActivity::class.java
+                        ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    )
+                    activity!!.finish()
                     return true
                 }
                 else -> {
