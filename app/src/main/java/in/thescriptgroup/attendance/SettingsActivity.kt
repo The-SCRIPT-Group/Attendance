@@ -53,8 +53,8 @@ class SettingsActivity : AppCompatActivity() {
             desiredAttendance.setOnBindEditTextListener { editText ->
                 editText.inputType =
                     InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED
-                editText.filters = arrayOf(InputFilter.LengthFilter(3))
-                editText.hint = "Between 0 - 100"
+                editText.filters = arrayOf(InputFilter.LengthFilter(2))
+                editText.hint = "Between 0 - 99"
             }
             desiredAttendance.onPreferenceChangeListener = this
             logout = preferenceManager.findPreference("logout")!!
@@ -66,14 +66,6 @@ class SettingsActivity : AppCompatActivity() {
             when (preference) {
                 desiredAttendance -> {
                     val value = newValue.toString().toInt()
-                    if (value < 0 || value > 100) {
-                        Toast.makeText(
-                            activity,
-                            "Please choose something from 0-100",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        return false
-                    }
                     if (desiredAttendance.text.toInt() == value) {
                         return false
                     }
