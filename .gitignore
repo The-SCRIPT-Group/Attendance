@@ -158,6 +158,3 @@ keystore.properties
 # Ignore signed build artifacts
 app/debug/
 app/release/
-
-# Firebase config
-app/google-services.json
