@@ -65,14 +65,14 @@ data class Subject(
 
         if (lessAttendance) {
             count = 0
-            while (present * 100 / total <= desired) {
+            while (present * 100 / total < desired) {
                 present++
                 total++
                 count++
             }
         } else {
             count = -1
-            while (present * 100 / total >= desired) {
+            while (present * 100 / total > desired) {
                 total++
                 count++
             }
