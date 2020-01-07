@@ -8,7 +8,7 @@
 
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/username_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/enter_username"
@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0.405" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
