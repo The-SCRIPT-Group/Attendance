@@ -35,13 +35,18 @@ class AttendanceActivity : AppCompatActivity() {
         sharedPref = this.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
+        val username = sharedPref.getString(getString(R.string.username_key), "")!!
+        val password = sharedPref.getString(getString(R.string.password_key), "")!!
+        if (username.isEmpty() || password.isEmpty()) {
+            val intent = Intent(this, LoginActivity::class.java)
+            finish()
+            startActivity(intent)
+        }
         Toast.makeText(this, "Pull down to refresh attendance!", Toast.LENGTH_SHORT).show()
         updateAttendance(update = false)
 
         swipeContainer.setOnRefreshListener {
 
-            val username = intent.getStringExtra("username")!!
-            val password = intent.getStringExtra("password")!!
             val call =
                 ApiClient.client.create(Attendance::class.java).getAttendance(username, password)
 
