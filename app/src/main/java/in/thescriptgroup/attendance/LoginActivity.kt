@@ -31,57 +31,58 @@ class LoginActivity : AppCompatActivity() {
 
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please enter the details!", Toast.LENGTH_SHORT).show()
-            } else {
-                val call =
-                    ApiClient.client.create(Attendance::class.java)
-                        .getAttendance(username, password)
-                call.enqueue(object : Callback<List<Subject>> {
-                    override fun onResponse(
-                        call: Call<List<Subject>>,
-                        response: Response<List<Subject>>
-                    ) {
-                        Objects.requireNonNull<List<Subject>>(
-                            response.body(),
-                            "Response body is null"
-                        )
-                        val attendanceData: List<Subject> = response.body()!!
-                        val err: String? = attendanceData[0].response
-                        if (err != null) {
-                            Toast.makeText(
-                                this@LoginActivity,
-                                err,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            password_input.text.clear()
-                        } else {
-                            val attendanceStr = gson.toJson(attendanceData)
-                            val timestamp = Calendar.getInstance().time.toString()
-                            with(sharedPref.edit()) {
-                                putString(getString(R.string.attendance_key), attendanceStr)
-                                putString(getString(R.string.timestamp_key), timestamp)
-                                commit()
-                            }
-                            val intent = Intent(this@LoginActivity, AttendanceActivity::class.java)
-                            intent.putExtra("username", username)
-                            intent.putExtra("password", password)
-                            finish()
-                            startActivity(intent)
-                        }
-                    }
-
-                    override fun onFailure(call: Call<List<Subject>>, t: Throwable) {
-                        Log.v("onFailure", t.message!!)
-                        if (t.message == "timeout") {
-                            Toast.makeText(
-                                this@LoginActivity,
-                                "Connection timed out!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                })
+                return@setOnClickListener
             }
+            val call =
+                ApiClient.client.create(Attendance::class.java)
+                    .getAttendance(username, password)
+            call.enqueue(object : Callback<List<Subject>> {
+                override fun onResponse(
+                    call: Call<List<Subject>>,
+                    response: Response<List<Subject>>
+                ) {
+                    Objects.requireNonNull<List<Subject>>(
+                        response.body(),
+                        "Response body is null"
+                    )
+                    val attendanceData: List<Subject> = response.body()!!
+                    val err: String? = attendanceData[0].response
+                    if (err != null) {
+                        Toast.makeText(
+                            this@LoginActivity,
+                            err,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        password_input.text.clear()
+                        return
+                    }
+                    val attendanceStr = gson.toJson(attendanceData)
+                    val timestamp = Calendar.getInstance().time.toString()
+                    with(sharedPref.edit()) {
+                        putString(getString(R.string.username_key), username)
+                        putString(getString(R.string.password_key), password)
+                        putString(getString(R.string.attendance_key), attendanceStr)
+                        putString(getString(R.string.timestamp_key), timestamp)
+                        commit()
+                    }
+                    val intent = Intent(this@LoginActivity, AttendanceActivity::class.java)
+                    intent.putExtra("username", username)
+                    intent.putExtra("password", password)
+                    finish()
+                    startActivity(intent)
+                }
+
+                override fun onFailure(call: Call<List<Subject>>, t: Throwable) {
+                    Log.v("onFailure", t.message!!)
+                    if (t.message == "timeout") {
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Connection timed out!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            })
         }
     }
 }
-
