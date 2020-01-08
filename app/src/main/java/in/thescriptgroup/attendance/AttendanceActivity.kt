@@ -30,6 +30,7 @@ class AttendanceActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTitle(R.string.title_attendance)
         setContentView(R.layout.activity_attendance)
 
         sharedPref = this.getSharedPreferences(
