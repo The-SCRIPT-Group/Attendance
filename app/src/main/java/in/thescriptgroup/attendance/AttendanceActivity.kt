@@ -38,9 +38,8 @@ class AttendanceActivity : AppCompatActivity() {
         val username = sharedPref.getString(getString(R.string.username_key), "")!!
         val password = sharedPref.getString(getString(R.string.password_key), "")!!
         if (username.isEmpty() || password.isEmpty()) {
-            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
-            startActivity(intent)
         }
         Toast.makeText(this, "Pull down to refresh attendance!", Toast.LENGTH_SHORT).show()
         updateAttendance(update = false)
