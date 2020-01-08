@@ -33,6 +33,11 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please enter the details!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            if (!(username[0] == 'S' && username.length == 11)) {
+                Toast.makeText(this, "Invalid ID!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val call =
                 ApiClient.client.create(Attendance::class.java)
                     .getAttendance(username, password)
