@@ -130,6 +130,10 @@ class AttendanceActivity : AppCompatActivity() {
                 startActivity(Intent(this, SettingsActivity::class.java))
                 true
             }
+            R.id.refresh -> {
+                updateAttendance()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

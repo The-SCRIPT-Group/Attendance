@@ -6,4 +6,11 @@
         android:alphabeticShortcut="s"
         android:title="@string/settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/refresh"
+        android:alphabeticShortcut="r"
+        android:title="@string/refresh"
+        app:showAsAction="never" />
+
 </menu>
