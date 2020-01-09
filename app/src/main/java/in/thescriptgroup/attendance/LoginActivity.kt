@@ -26,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
         submit.setOnClickListener {
+            Toast.makeText(this, "Verifying credentials!", Toast.LENGTH_SHORT).show()
             val username = username_input.text.toString()
             val password = password_input.text.toString()
 
@@ -38,6 +39,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Invalid ID!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            submit.isEnabled = false
             val call =
                 ApiClient.client.create(Attendance::class.java)
                     .getAttendance(username, password)
@@ -59,6 +61,7 @@ class LoginActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         password_input.text.clear()
+                        submit.isEnabled = true
                         return
                     }
                     val attendanceStr = gson.toJson(attendanceData)
@@ -85,6 +88,7 @@ class LoginActivity : AppCompatActivity() {
                             "Connection timed out!",
                             Toast.LENGTH_SHORT
                         ).show()
+                        submit.isEnabled = true
                     }
                 }
             })
