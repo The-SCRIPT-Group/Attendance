@@ -166,22 +166,32 @@ class AttendanceActivity : AppCompatActivity() {
         attendanceRecycler.affectOnItemClicks { position, _ ->
             val subject = attendance[position]
             val customDialog = AlertDialog.Builder(this)
-            var message = "Attended :-\n"
+            var message = ""
+
+            if (subject.name == "Total") {
+                val (total_present, total_total) = subject.getTotal()
+                message += "Total Attendance =  $total_present / $total_total ( ${String.format(
+                    "%.2f",
+                    (total_present / total_total.toDouble()) * 100
+                )}% )\n\n"
+            }
+
+            message += "Attended :-\n"
 
             if (subject.th_total != 0) {
-                message += "\tTheory: ${subject.th_present} / ${subject.th_total} ( ${String.format(
+                message += "\t\tTheory: ${subject.th_present} / ${subject.th_total} ( ${String.format(
                     "%.2f",
                     (subject.th_present / subject.th_total.toDouble()) * 100
                 )}% )\n"
             }
             if (subject.pr_total != 0) {
-                message += "\tPractical: ${subject.pr_present} / ${subject.pr_total} ( ${String.format(
+                message += "\t\tPractical: ${subject.pr_present} / ${subject.pr_total} ( ${String.format(
                     "%.2f",
                     (subject.pr_present / subject.pr_total.toDouble()) * 100
                 )}% )\n"
             }
             if (subject.tu_total != 0) {
-                message += "\tTutorial: ${subject.tu_present} / ${subject.tu_total} ( ${String.format(
+                message += "\t\tTutorial: ${subject.tu_present} / ${subject.tu_total} ( ${String.format(
                     "%.2f",
                     (subject.tu_present / subject.tu_total.toDouble()) * 100
                 )}% )\n"

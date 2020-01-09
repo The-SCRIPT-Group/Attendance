@@ -30,6 +30,13 @@ data class Subject(
         this.tu_total += subject.tu_total
     }
 
+    fun getTotal(): Pair<Int, Int> {
+        return Pair(
+            this.th_present + this.pr_present + this.tu_present,
+            this.th_total + this.pr_total + this.tu_total
+        )
+    }
+
     fun calculateLectures(desired: Int): HashMap<String, Int> {
         val data: HashMap<String, Int> = hashMapOf()
 
