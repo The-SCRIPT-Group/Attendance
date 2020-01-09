@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (!(username[0] == 'S' && username.length == 11)) {
+            if (!(username[0] in "Ss" && username.length == 11)) {
                 Toast.makeText(this, "Invalid ID!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
