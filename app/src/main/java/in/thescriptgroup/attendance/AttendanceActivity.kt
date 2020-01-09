@@ -170,7 +170,7 @@ class AttendanceActivity : AppCompatActivity() {
 
             if (subject.name == "Total") {
                 val (total_present, total_total) = subject.getTotal()
-                message += "Total Attendance =  $total_present / $total_total ( ${String.format(
+                message += "Total Attendance:  $total_present / $total_total ( ${String.format(
                     "%.2f",
                     (total_present / total_total.toDouble()) * 100
                 )}% )\n\n"
