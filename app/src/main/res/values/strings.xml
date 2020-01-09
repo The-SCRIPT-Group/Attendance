@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TSG Attendance</string>
+    <string name="app_name">Attendance</string>
     <string name="action_settings">Settings</string>
     <string name="saved_username" />
     <string name="saved_password" />
