@@ -8,15 +8,30 @@
     tools:context=".LoginActivity">
 
 
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:layout_constraintBottom_toTopOf="@+id/username_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher" />
+
     <EditText
         android:id="@+id/username_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/enter_username"
         android:maxLength="11"
+        android:inputType="text"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         app:layout_constraintBottom_toTopOf="@+id/password_input"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.916" />
@@ -28,9 +43,11 @@
         android:ems="10"
         android:hint="@string/enter_password"
         android:inputType="textPassword"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         app:layout_constraintBottom_toTopOf="@+id/submit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.733" />
