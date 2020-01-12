@@ -28,6 +28,8 @@ class AttendanceActivity : AppCompatActivity() {
 
     val gson = Gson()
 
+    lateinit var attendance: ArrayList<Subject>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTitle(R.string.title_attendance)
@@ -145,8 +147,7 @@ class AttendanceActivity : AppCompatActivity() {
         if (timestamp == "") return
 
         val attendanceStr = sharedPref.getString(getString(R.string.attendance_key), "")
-        val attendance: ArrayList<Subject> =
-            gson.fromJson(attendanceStr, SubjectList::class.java)
+        attendance = gson.fromJson(attendanceStr, SubjectList::class.java)
 
         val total = Subject(name = "Total")
         attendance.forEach {
@@ -163,8 +164,8 @@ class AttendanceActivity : AppCompatActivity() {
         attendanceRecycler.apply {
             this.layoutManager = LinearLayoutManager(context)
             this.adapter = ListAdapter(attendance)
+            this.adapter?.notifyDataSetChanged()
         }
-        attendanceRecycler.adapter?.notifyDataSetChanged()
 
 
         attendanceRecycler.affectOnItemClicks { position, _ ->
