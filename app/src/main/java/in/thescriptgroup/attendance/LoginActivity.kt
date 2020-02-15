@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
@@ -28,8 +26,6 @@ class LoginActivity : AppCompatActivity() {
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
 
-        //val progressBar:ProgressBar = this.progressBar1
-
         submit.setOnClickListener {
 
             Toast.makeText(this, "Verifying credentials!", Toast.LENGTH_SHORT).show()
@@ -45,9 +41,6 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Invalid ID!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
-           // this@LoginActivity.runOnUiThread(java.lang.Runnable { progressBar1.visibility=View.VISIBLE })
-            //this@LoginActivity.progressBar1.visibility=View.VISIBLE
 
             submit.isEnabled = false
             val call =
@@ -102,8 +95,6 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             })
-           // this@LoginActivity.runOnUiThread(java.lang.Runnable { progressBar1.visibility=View.GONE })
-            //this@LoginActivity.progressBar1.visibility=View.GONE
         }
     }
 }
