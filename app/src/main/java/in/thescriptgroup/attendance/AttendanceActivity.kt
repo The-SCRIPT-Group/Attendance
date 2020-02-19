@@ -210,7 +210,7 @@ class AttendanceActivity : AppCompatActivity() {
                         when {
                             data[key]!! < 0 -> "need to attend ${abs(data[key]!!)}"
                             data[key]!! > 0 -> "can bunk ${data[key]}"
-                            else -> "cannot not bunk any"
+                            else -> "cannot bunk any"
                         } + " $key \n"
             }
 
