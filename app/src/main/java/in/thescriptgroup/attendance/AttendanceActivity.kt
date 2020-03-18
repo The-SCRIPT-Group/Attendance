@@ -161,7 +161,7 @@ class AttendanceActivity : AppCompatActivity() {
                 .show()
         }
 
-        supportActionBar?.subtitle = timestamp
+        supportActionBar?.subtitle = getString(R.string.last_checked, timestamp)
         attendanceRecycler.apply {
             this.layoutManager = LinearLayoutManager(context)
             this.adapter = ListAdapter(attendance)
