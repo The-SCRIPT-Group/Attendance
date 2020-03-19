@@ -10,16 +10,15 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_attendance.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.math.abs
 
 
 class AttendanceActivity : AppCompatActivity() {
@@ -162,6 +161,9 @@ class AttendanceActivity : AppCompatActivity() {
         }
 
         supportActionBar?.subtitle = getString(R.string.last_checked, timestamp)
+
+        (attendanceRecycler.getItemAnimator() as SimpleItemAnimator).supportsChangeAnimations =
+            false
         attendanceRecycler.apply {
             this.layoutManager = LinearLayoutManager(context)
             this.adapter = ListAdapter(attendance)

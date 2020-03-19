@@ -17,9 +17,11 @@ data class Subject(
     var tu_present: Int,
     var tu_total: Int,
 
+    var expanded: Boolean,
+
     val response: String
 ) {
-    constructor(name: String) : this(name, 0, 0, 0, 0, 0, 0, "")
+    constructor(name: String) : this(name, 0, 0, 0, 0, 0, 0, false, "")
 
     operator fun plus(subject: Subject) {
         this.th_present += subject.th_present

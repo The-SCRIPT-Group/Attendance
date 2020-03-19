@@ -8,10 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.abs
-import java.util.*
 
 class SubjectViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(inflater.inflate(R.layout.list_item, parent, false)) {
@@ -57,7 +55,7 @@ class ListAdapter(private val list: ArrayList<Subject>) :
         return SubjectViewHolder(inflater, parent)
     }
 
-    private fun getSubjectDetails(view: View, subject: Subject): String {
+    fun getSubjectDetails(view: View, subject: Subject): String {
         var message = ""
 
         if (subject.name == "Total") {
@@ -112,16 +110,15 @@ class ListAdapter(private val list: ArrayList<Subject>) :
 
         holder.itemView.setOnClickListener { view ->
             val subject = list[position]
-            val customDialog = AlertDialog.Builder(view.context)
             val message = getSubjectDetails(view, subject)
-            customDialog
-                .setMessage(message)
-                .setNeutralButton("Dismiss") { dialog, _ ->
-                    dialog.cancel()
-                }
-            val dialog = customDialog.create()
-            dialog.setTitle(subject.name)
-            dialog.show()
+
+            val subjectExpanded = holder.itemView.findViewById<TextView>(R.id.subject_details)
+            subjectExpanded.text = message
+            subject.expanded = !subject.expanded
+            subjectExpanded.visibility =
+                if (subject.expanded) View.VISIBLE else View.GONE
+
+            notifyItemChanged(position)
         }
     }
 
