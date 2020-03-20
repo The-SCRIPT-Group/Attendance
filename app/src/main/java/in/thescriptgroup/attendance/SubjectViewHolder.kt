@@ -114,9 +114,8 @@ class ListAdapter(private val list: ArrayList<Subject>) :
 
             val subjectExpanded = holder.itemView.findViewById<TextView>(R.id.subject_details)
             subjectExpanded.text = message
-            subject.expanded = !subject.expanded
             subjectExpanded.visibility =
-                if (subject.expanded) View.VISIBLE else View.GONE
+                if (subjectExpanded.visibility == View.GONE) View.VISIBLE else View.GONE
 
             notifyItemChanged(position)
         }
