@@ -161,7 +161,7 @@ class AttendanceActivity : AppCompatActivity() {
 
         supportActionBar?.subtitle = getString(R.string.last_checked, timestamp)
 
-        (attendanceRecycler.getItemAnimator() as SimpleItemAnimator).supportsChangeAnimations =
+        (attendanceRecycler.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
             false
         attendanceRecycler.apply {
             this.layoutManager = LinearLayoutManager(context)
