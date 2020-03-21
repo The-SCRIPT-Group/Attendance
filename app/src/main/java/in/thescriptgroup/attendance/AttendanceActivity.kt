@@ -33,7 +33,6 @@ class AttendanceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setTitle(R.string.title_attendance)
         setContentView(R.layout.activity_attendance)
-        setSupportActionBar(findViewById(R.id.toolbar))
 
         sharedPref = this.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE

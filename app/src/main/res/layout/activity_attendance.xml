@@ -7,7 +7,9 @@
     android:orientation="vertical"
     tools:context=".AttendanceActivity">
 
+    <!-- For custom toolbar
     <include layout="@layout/toolbar" />
+    -->
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeContainer"
