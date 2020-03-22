@@ -26,6 +26,6 @@
 
     <!-- Preferences -->
     <string name="set_desired_attendance">Set the desired attendance for calculation</string>
-    <string name="app_version">4.20.69</string>
+    <string name="app_version">0.1</string>
     <string name="submit_hint">@string/title_login</string>
 </resources>
