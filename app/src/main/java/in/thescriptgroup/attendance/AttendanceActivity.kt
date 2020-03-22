@@ -88,8 +88,6 @@ class AttendanceActivity : AppCompatActivity() {
         val call =
             ApiClient.client.create(Attendance::class.java).getAttendance(username, password)
 
-        call.execute()
-
         swipeContainer.isRefreshing = true
 
         call.enqueue(object : Callback<List<Subject>> {
@@ -97,7 +95,6 @@ class AttendanceActivity : AppCompatActivity() {
                 call: Call<List<Subject>>,
                 response: Response<List<Subject>>
             ) {
-                Log.v("CheckCall", response.isSuccessful.toString())
                 Objects.requireNonNull<List<Subject>>(response.body(), "Response body is null")
                 val attendanceData: List<Subject> = response.body()!!
                 val err: String? = attendanceData[0].response
