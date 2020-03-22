@@ -1,6 +1,7 @@
 package `in`.thescriptgroup.attendance
 
 import `in`.thescriptgroup.attendance.models.Subject
+import android.util.Log
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -53,7 +54,7 @@ object ApiClient {
         get() {
             if (retrofit == null) {
                 retrofit = Retrofit.Builder()
-                    .baseUrl(BASE_URL.toString())
+                    .baseUrl(BASE_URL.joinToString(""))
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS).build())
                     .build()
