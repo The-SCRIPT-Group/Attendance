@@ -1,7 +1,6 @@
 package `in`.thescriptgroup.attendance
 
 import `in`.thescriptgroup.attendance.models.Subject
-import android.util.Log
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -46,7 +45,12 @@ object ApiClient {
         "p",
         ".",
         "i",
-        "n"
+        "n",
+        "/",
+        "a",
+        "p",
+        "i",
+        "/"
     )
     private var retrofit: Retrofit? = null
 
