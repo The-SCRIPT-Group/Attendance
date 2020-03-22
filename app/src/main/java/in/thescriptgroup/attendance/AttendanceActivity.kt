@@ -84,9 +84,11 @@ class AttendanceActivity : AppCompatActivity() {
         }
     }
 
-    fun fetchAndUpdateAttendance() {
+    private fun fetchAndUpdateAttendance() {
         val call =
             ApiClient.client.create(Attendance::class.java).getAttendance(username, password)
+
+        swipeContainer.isRefreshing = true
 
         call.enqueue(object : Callback<List<Subject>> {
             override fun onResponse(
