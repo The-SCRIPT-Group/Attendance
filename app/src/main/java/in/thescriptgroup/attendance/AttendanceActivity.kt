@@ -28,6 +28,8 @@ class AttendanceActivity : AppCompatActivity() {
     val gson = Gson()
 
     lateinit var attendance: ArrayList<Subject>
+    lateinit var username: String
+    lateinit var password: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +39,8 @@ class AttendanceActivity : AppCompatActivity() {
         sharedPref = this.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
-        val username = sharedPref.getString(getString(R.string.username_key), "")!!
-        val password = sharedPref.getString(getString(R.string.password_key), "")!!
+        username = sharedPref.getString(getString(R.string.username_key), "")!!
+        password = sharedPref.getString(getString(R.string.password_key), "")!!
         if (username.isEmpty() || password.isEmpty()) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
@@ -47,66 +49,9 @@ class AttendanceActivity : AppCompatActivity() {
         updateAttendance(update = false)
 
         swipeContainer.setOnRefreshListener {
-
-            val call =
-                ApiClient.client.create(Attendance::class.java).getAttendance(username, password)
-
-            call.enqueue(object : Callback<List<Subject>> {
-                override fun onResponse(
-                    call: Call<List<Subject>>,
-                    response: Response<List<Subject>>
-                ) {
-                    Objects.requireNonNull<List<Subject>>(response.body(), "Response body is null")
-                    val attendanceData: List<Subject> = response.body()!!
-                    val err: String? = attendanceData[0].response
-                    if (err != null) {
-                        Toast.makeText(
-                            this@AttendanceActivity,
-                            err,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        if (err == "Wrong credentials!") {
-                            with(sharedPref.edit()) {
-                                putString(getString(R.string.username_key), "")
-                                putString(getString(R.string.password_key), "")
-                                putString(getString(R.string.attendance_key), "")
-                                putString(getString(R.string.timestamp_key), "")
-                                commit()
-                            }
-                            startActivity(
-                                Intent(
-                                    this@AttendanceActivity,
-                                    LoginActivity::class.java
-                                )
-                            )
-                            finish()
-                        }
-                    } else {
-                        val attendanceStr = gson.toJson(attendanceData)
-                        val timestamp = Calendar.getInstance().time.toString()
-                        with(sharedPref.edit()) {
-                            putString(getString(R.string.attendance_key), attendanceStr)
-                            putString(getString(R.string.timestamp_key), timestamp)
-                            commit()
-                        }
-                        updateAttendance()
-                    }
-                    swipeContainer.isRefreshing = false
-                }
-
-                override fun onFailure(call: Call<List<Subject>>, t: Throwable) {
-                    Log.v("onFailure", t.message!!)
-                    if (t.message == "timeout") {
-                        Toast.makeText(
-                            this@AttendanceActivity,
-                            "Connection timed out!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    swipeContainer.isRefreshing = false
-                }
-            })
+            fetchAndUpdateAttendance()
         }
+
         swipeContainer.setColorSchemeResources(
             android.R.color.holo_blue_bright,
             android.R.color.holo_green_light,
@@ -132,11 +77,72 @@ class AttendanceActivity : AppCompatActivity() {
                 true
             }
             R.id.refresh -> {
-                updateAttendance()
+                fetchAndUpdateAttendance()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun fetchAndUpdateAttendance() {
+        val call =
+            ApiClient.client.create(Attendance::class.java).getAttendance(username, password)
+
+        call.enqueue(object : Callback<List<Subject>> {
+            override fun onResponse(
+                call: Call<List<Subject>>,
+                response: Response<List<Subject>>
+            ) {
+                Objects.requireNonNull<List<Subject>>(response.body(), "Response body is null")
+                val attendanceData: List<Subject> = response.body()!!
+                val err: String? = attendanceData[0].response
+                if (err != null) {
+                    Toast.makeText(
+                        this@AttendanceActivity,
+                        err,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    if (err == "Wrong credentials!") {
+                        with(sharedPref.edit()) {
+                            putString(getString(R.string.username_key), "")
+                            putString(getString(R.string.password_key), "")
+                            putString(getString(R.string.attendance_key), "")
+                            putString(getString(R.string.timestamp_key), "")
+                            commit()
+                        }
+                        startActivity(
+                            Intent(
+                                this@AttendanceActivity,
+                                LoginActivity::class.java
+                            )
+                        )
+                        finish()
+                    }
+                } else {
+                    val attendanceStr = gson.toJson(attendanceData)
+                    val timestamp = Calendar.getInstance().time.toString()
+                    with(sharedPref.edit()) {
+                        putString(getString(R.string.attendance_key), attendanceStr)
+                        putString(getString(R.string.timestamp_key), timestamp)
+                        commit()
+                    }
+                    updateAttendance()
+                }
+                swipeContainer.isRefreshing = false
+            }
+
+            override fun onFailure(call: Call<List<Subject>>, t: Throwable) {
+                Log.v("onFailure", t.message!!)
+                if (t.message == "timeout") {
+                    Toast.makeText(
+                        this@AttendanceActivity,
+                        "Connection timed out!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                swipeContainer.isRefreshing = false
+            }
+        })
     }
 
 
