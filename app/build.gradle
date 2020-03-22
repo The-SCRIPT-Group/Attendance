@@ -24,8 +24,8 @@ android {
         applicationId "in.thescriptgroup.attendance"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode beta
-        versionName "0.1"
+        versionCode 1
+        versionName "beta"
     }
 
     // If the keystore file exists
