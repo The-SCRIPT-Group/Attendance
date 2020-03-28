@@ -22,7 +22,7 @@ android {
 
     defaultConfig {
         applicationId "in.thescriptgroup.attendance"
-        minSdkVersion 24
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 4
         versionName "v1.0"
