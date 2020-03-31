@@ -95,7 +95,15 @@ class AttendanceActivity : AppCompatActivity() {
                 call: Call<List<Subject>>,
                 response: Response<List<Subject>>
             ) {
-                Objects.requireNonNull<List<Subject>>(response.body(), "Response body is null")
+                if (response.body() == null) {
+                    Toast.makeText(
+                        this@AttendanceActivity,
+                        "Error occurred fetching data from server!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    swipeContainer.isRefreshing = false
+                    return
+                }
                 val attendanceData: List<Subject> = response.body()!!
                 val err: String? = attendanceData[0].response
                 if (err != null) {
