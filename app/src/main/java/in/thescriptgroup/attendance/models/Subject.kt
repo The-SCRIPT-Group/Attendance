@@ -7,19 +7,22 @@ import kotlinx.serialization.Serializable
 data class Subject(
     @SerializedName("subject")
     var name: String,
-    @SerializedName("th_present")
+
     var th_present: Int,
-    @SerializedName("th_total")
     var th_total: Int,
 
     var pr_present: Int,
     var pr_total: Int,
+
     var tu_present: Int,
     var tu_total: Int,
 
+    var in_present: Int,
+    var in_total: Int,
+
     val response: String
 ) {
-    constructor(name: String) : this(name, 0, 0, 0, 0, 0, 0, "")
+    constructor(name: String) : this(name, 0, 0, 0, 0, 0, 0, 0, 0, "")
 
     operator fun plus(subject: Subject) {
         this.th_present += subject.th_present
@@ -27,13 +30,15 @@ data class Subject(
         this.pr_present += subject.pr_present
         this.pr_total += subject.pr_total
         this.tu_present += subject.tu_present
+        this.in_present += subject.in_present
+        this.in_total += subject.in_total
         this.tu_total += subject.tu_total
     }
 
     fun getTotal(): Pair<Int, Int> {
         return Pair(
-            this.th_present + this.pr_present + this.tu_present,
-            this.th_total + this.pr_total + this.tu_total
+            this.th_present + this.pr_present + this.tu_present + this.in_present,
+            this.th_total + this.pr_total + this.tu_total + this.in_total
         )
     }
 
@@ -51,6 +56,10 @@ data class Subject(
         if (this.tu_total != 0) {
             data["Tutorials"] =
                 getLectureCount(this.tu_present, this.tu_total, desired)
+        }
+        if (this.in_total != 0) {
+            data["Internship"] =
+                getLectureCount(this.in_present, this.in_total, desired)
         }
         return data
     }

@@ -17,7 +17,6 @@ class SubjectViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     private var theoryView: TextView? = null
     private var pracView: TextView? = null
 
-
     init {
         subjectView = itemView.findViewById(R.id.subject_name)
         theoryView = itemView.findViewById(R.id.theory_perc)
@@ -27,6 +26,13 @@ class SubjectViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     @SuppressLint("SetTextI18n")
     fun bind(subject: Subject) {
         subjectView?.text = subject.name
+
+        if (subject.in_total != 0)
+            theoryView?.text = "Internship: ${String.format(
+                "%.2f",
+                (subject.in_present / subject.in_total.toDouble()) * 100
+            )}%"
+
         if (subject.th_total != 0)
             theoryView?.text = "Theory: ${String.format(
                 "%.2f",
@@ -77,6 +83,11 @@ class ListAdapter(private val list: ArrayList<Subject>) :
         if (subject.tu_total != 0) {
             message += "\t\tTutorial: ${subject.tu_present} / ${subject.tu_total} \n"
         }
+
+        if (subject.in_total != 0) {
+            message += "\t\tInternship: ${subject.in_present} / ${subject.in_total} \n"
+        }
+
         message += "\n\n"
 
         val sharedPref: SharedPreferences = view.context.getSharedPreferences(
