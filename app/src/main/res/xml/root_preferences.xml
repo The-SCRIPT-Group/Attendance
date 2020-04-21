@@ -3,10 +3,10 @@
     <PreferenceCategory app:title="@string/attendance_settings_header">
 
         <EditTextPreference
+            app:defaultValue="75"
             app:key="desired_attendance"
             app:title="@string/set_desired_attendance"
-            app:useSimpleSummaryProvider="true"
-            app:defaultValue="75" />
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
@@ -14,8 +14,8 @@
 
         <Preference
             app:key="version_info"
-            app:title="@string/version_header"
-            app:summary="@string/app_version" />
+            app:summary="@string/app_version"
+            app:title="@string/version_header" />
 
         <Preference
             app:key="logout"
