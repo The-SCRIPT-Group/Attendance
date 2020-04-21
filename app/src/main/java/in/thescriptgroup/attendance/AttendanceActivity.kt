@@ -164,11 +164,13 @@ class AttendanceActivity : AppCompatActivity() {
         val attendanceStr = sharedPref.getString(getString(R.string.attendance_key), "")
         attendance = gson.fromJson(attendanceStr, SubjectList::class.java)
 
-        val total = Subject(name = "Total")
-        attendance.forEach {
-            total.plus(it)
+        if (attendance.size > 1) {
+            val total = Subject(name = "Total")
+            attendance.forEach {
+                total.plus(it)
+            }
+            attendance.add(total)
         }
-        attendance.add(total)
 
         if (update) {
             Toast.makeText(this@AttendanceActivity, "Updated attendance!", Toast.LENGTH_SHORT)
