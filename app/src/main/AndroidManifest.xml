@@ -26,6 +26,10 @@
             android:label="@string/title_login"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_launcher" />
+
         <service
             android:name=".FCMService"
             android:exported="false">

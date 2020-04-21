@@ -62,6 +62,7 @@ class ListAdapter(private val list: ArrayList<Subject>) :
     }
 
     fun getSubjectDetails(view: View, subject: Subject): String {
+        var show_bunks: Boolean = true
         var message = ""
 
         if (subject.name == "Total") {
@@ -86,23 +87,26 @@ class ListAdapter(private val list: ArrayList<Subject>) :
 
         if (subject.in_total != 0) {
             message += "\t\tInternship: ${subject.in_present} / ${subject.in_total} \n"
+            show_bunks = false
         }
 
-        message += "\n\n"
+        if (show_bunks) {
+            message += "\n\n"
 
-        val sharedPref: SharedPreferences = view.context.getSharedPreferences(
-            view.context.getString(R.string.preference_file_key), Context.MODE_PRIVATE
-        )
-        val desired =
-            sharedPref.getInt(view.context.getString(R.string.desired_attendance_key), 75)
-        val data = subject.calculateLectures(desired)
-        for (key in data.keys) {
-            message += "You " +
-                    when {
-                        data[key]!! < 0 -> "need to attend ${abs(data[key]!!)}"
-                        data[key]!! > 0 -> "can bunk ${data[key]}"
-                        else -> "cannot bunk any"
-                    } + " $key \n"
+            val sharedPref: SharedPreferences = view.context.getSharedPreferences(
+                view.context.getString(R.string.preference_file_key), Context.MODE_PRIVATE
+            )
+            val desired =
+                sharedPref.getInt(view.context.getString(R.string.desired_attendance_key), 75)
+            val data = subject.calculateLectures(desired)
+            for (key in data.keys) {
+                message += "You " +
+                        when {
+                            data[key]!! < 0 -> "need to attend ${abs(data[key]!!)}"
+                            data[key]!! > 0 -> "can bunk ${data[key]}"
+                            else -> "cannot bunk any"
+                        } + " $key \n"
+            }
         }
         return message
     }
