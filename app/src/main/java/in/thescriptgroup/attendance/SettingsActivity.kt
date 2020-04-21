@@ -51,8 +51,7 @@ class SettingsActivity : AppCompatActivity() {
             desiredAttendance =
                 preferenceManager.findPreference("desired_attendance")!!
             desiredAttendance.setOnBindEditTextListener { editText ->
-                editText.inputType =
-                    InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED
+                editText.inputType = InputType.TYPE_CLASS_NUMBER
                 editText.filters = arrayOf(InputFilter.LengthFilter(2))
                 editText.hint = "Between 0 - 99"
             }
