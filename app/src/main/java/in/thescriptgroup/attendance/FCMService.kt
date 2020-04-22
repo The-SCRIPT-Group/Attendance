@@ -79,7 +79,9 @@ class FCMService : FirebaseMessagingService() {
     }
 
     override fun onNewToken(token: String) {
-        Log.d(TAG, "Refreshed token: $token")
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Refreshed token: $token")
+        }
     }
 
     companion object {

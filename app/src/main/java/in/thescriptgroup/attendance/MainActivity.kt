@@ -3,12 +3,31 @@ package `in`.thescriptgroup.attendance
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 
 class MainActivity : AppCompatActivity() {
+
+    private val TAG = this::class.qualifiedName
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (BuildConfig.DEBUG) {
+            FirebaseInstanceId.getInstance().instanceId
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w(TAG, "getInstanceId failed", task.exception)
+                        return@OnCompleteListener
+                    }
+                    // Get and log new Instance ID token
+                    Log.d(TAG, "Token is ${task.result?.token}")
+                })
+        }
+
         val sharedPref = this.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
