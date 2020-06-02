@@ -13,7 +13,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.gson.Gson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.activity_attendance.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,7 +26,8 @@ class AttendanceActivity : AppCompatActivity() {
 
     lateinit var sharedPref: SharedPreferences
 
-    val gson = Gson()
+    val moshi: Moshi = Moshi.Builder().build()
+    val jsonAdapter: JsonAdapter<SubjectList> = moshi.adapter(SubjectList::class.java)
 
     lateinit var attendance: ArrayList<Subject>
     lateinit var username: String
@@ -129,7 +131,8 @@ class AttendanceActivity : AppCompatActivity() {
                         finish()
                     }
                 } else {
-                    val attendanceStr = gson.toJson(attendanceData)
+                    val attendanceStr =
+                        jsonAdapter.toJson(SubjectList(attendanceData).listToArrayList())
                     val timestamp = Calendar.getInstance().time.toString()
                     with(sharedPref.edit()) {
                         putString(getString(R.string.attendance_key), attendanceStr)
@@ -162,8 +165,7 @@ class AttendanceActivity : AppCompatActivity() {
         if (timestamp == "") return
 
         val attendanceStr = sharedPref.getString(getString(R.string.attendance_key), "")
-        attendance = gson.fromJson(attendanceStr, SubjectList::class.java)
-
+        attendance = jsonAdapter.fromJson(attendanceStr!!)!!
         if (attendance.size > 1) {
             val total = Subject(name = "Total")
             attendance.forEach {

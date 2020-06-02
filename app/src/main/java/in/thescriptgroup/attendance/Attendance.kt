@@ -4,7 +4,7 @@ import `in`.thescriptgroup.attendance.models.Subject
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -59,7 +59,7 @@ object ApiClient {
             if (retrofit == null) {
                 retrofit = Retrofit.Builder()
                     .baseUrl(BASE_URL.joinToString(""))
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(MoshiConverterFactory.create())
                     .client(OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS).build())
                     .build()
             }

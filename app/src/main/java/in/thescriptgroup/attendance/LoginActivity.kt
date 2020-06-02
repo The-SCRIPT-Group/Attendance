@@ -1,13 +1,15 @@
 package `in`.thescriptgroup.attendance
 
 import `in`.thescriptgroup.attendance.models.Subject
+import `in`.thescriptgroup.attendance.models.SubjectList
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,7 +18,8 @@ import java.util.*
 
 class LoginActivity : AppCompatActivity() {
 
-    val gson = Gson()
+    val moshi: Moshi = Moshi.Builder().build()
+    val jsonAdapter: JsonAdapter<SubjectList> = moshi.adapter(SubjectList::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +70,8 @@ class LoginActivity : AppCompatActivity() {
                         submit.isEnabled = true
                         return
                     }
-                    val attendanceStr = gson.toJson(attendanceData)
+                    val attendanceStr =
+                        jsonAdapter.toJson(SubjectList(attendanceData).listToArrayList())
                     val timestamp = Calendar.getInstance().time.toString()
                     with(sharedPref.edit()) {
                         putString(getString(R.string.username_key), username)

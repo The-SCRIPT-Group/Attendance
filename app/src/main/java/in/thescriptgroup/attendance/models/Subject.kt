@@ -1,11 +1,12 @@
 package `in`.thescriptgroup.attendance.models
 
-import com.google.gson.annotations.SerializedName
+
+import com.squareup.moshi.Json
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Subject(
-    @SerializedName("subject")
+    @Json(name = "subject")
     var name: String,
 
     var th_present: Int,
@@ -92,4 +93,14 @@ data class Subject(
     }
 }
 
-class SubjectList : ArrayList<Subject>()
+@Serializable
+data class SubjectList(var subjectList: List<Subject>) : ArrayList<Subject>() {
+
+    fun listToArrayList(): SubjectList {
+        val ret = arrayListOf<Subject>()
+        subjectList.forEach {
+            ret.add(it)
+        }
+        return SubjectList(ret)
+    }
+}
