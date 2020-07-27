@@ -82,7 +82,7 @@ data class Subject(
             }
         } else {
             total++
-            while (present * 100 / total > desired) {
+            while (present * 100 / total >= desired) {
                 total++
                 count++
             }
