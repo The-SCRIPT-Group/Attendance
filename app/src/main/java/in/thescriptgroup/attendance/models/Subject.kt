@@ -69,20 +69,19 @@ data class Subject(
         total: Int,
         desired: Int
     ): Int {
-        var count: Int
+        var count: Int = 0
         val lessAttendance: Boolean = present * 100 / total < desired
         var present: Int = present
         var total: Int = total
 
         if (lessAttendance) {
-            count = 0
             while (present * 100 / total < desired) {
                 present++
                 total++
                 count++
             }
         } else {
-            count = -1
+            total++
             while (present * 100 / total > desired) {
                 total++
                 count++
