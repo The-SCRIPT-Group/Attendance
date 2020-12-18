@@ -1,5 +1,6 @@
 package `in`.thescriptgroup.attendance
 
+import `in`.thescriptgroup.attendance.databinding.ActivityLoginBinding
 import `in`.thescriptgroup.attendance.models.Subject
 import android.content.Context
 import android.content.Intent
@@ -8,7 +9,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,19 +18,23 @@ class LoginActivity : AppCompatActivity() {
 
     val gson = Gson()
 
+    private lateinit var binding: ActivityLoginBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         val sharedPref = this.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
 
-        submit.setOnClickListener {
+        binding.submit.setOnClickListener {
 
             Toast.makeText(this, "Verifying credentials!", Toast.LENGTH_SHORT).show()
-            val username = username_input.text.toString()
-            val password = password_input.text.toString()
+            val username = binding.usernameInput.text.toString()
+            val password = binding.passwordInput.text.toString()
 
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please enter the details!", Toast.LENGTH_SHORT).show()
@@ -42,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            submit.isEnabled = false
+            binding.submit.isEnabled = false
             val call =
                 ApiClient.client.create(Attendance::class.java)
                     .getAttendance(username, password)
@@ -63,8 +67,8 @@ class LoginActivity : AppCompatActivity() {
                             err,
                             Toast.LENGTH_SHORT
                         ).show()
-                        password_input.text.clear()
-                        submit.isEnabled = true
+                        binding.passwordInput.text.clear()
+                        binding.submit.isEnabled = true
                         return
                     }
                     val attendanceStr = gson.toJson(attendanceData)
@@ -91,7 +95,7 @@ class LoginActivity : AppCompatActivity() {
                             "Connection timed out!",
                             Toast.LENGTH_SHORT
                         ).show()
-                        submit.isEnabled = true
+                        binding.submit.isEnabled = true
                     }
                 }
             })

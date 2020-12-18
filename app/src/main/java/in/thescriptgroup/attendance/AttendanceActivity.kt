@@ -1,5 +1,6 @@
 package `in`.thescriptgroup.attendance
 
+import `in`.thescriptgroup.attendance.databinding.ActivityAttendanceBinding
 import `in`.thescriptgroup.attendance.models.Subject
 import `in`.thescriptgroup.attendance.models.SubjectList
 import android.content.Context
@@ -14,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_attendance.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,11 +31,14 @@ class AttendanceActivity : AppCompatActivity() {
     lateinit var username: String
     lateinit var password: String
 
+    private lateinit var binding: ActivityAttendanceBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTitle(R.string.title_attendance)
-        setContentView(R.layout.activity_attendance)
-
+        binding = ActivityAttendanceBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
         sharedPref = this.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
@@ -48,11 +51,11 @@ class AttendanceActivity : AppCompatActivity() {
         Toast.makeText(this, "Pull down to refresh attendance!", Toast.LENGTH_SHORT).show()
         updateAttendance(update = false)
 
-        swipeContainer.setOnRefreshListener {
+        binding.swipeContainer.setOnRefreshListener {
             fetchAndUpdateAttendance()
         }
 
-        swipeContainer.setColorSchemeResources(
+        binding.swipeContainer.setColorSchemeResources(
             android.R.color.holo_blue_bright,
             android.R.color.holo_green_light,
             android.R.color.holo_orange_light,
@@ -88,7 +91,7 @@ class AttendanceActivity : AppCompatActivity() {
         val call =
             ApiClient.client.create(Attendance::class.java).getAttendance(username, password)
 
-        swipeContainer.isRefreshing = true
+        binding.swipeContainer.isRefreshing = true
 
         call.enqueue(object : Callback<List<Subject>> {
             override fun onResponse(
@@ -101,7 +104,7 @@ class AttendanceActivity : AppCompatActivity() {
                         "Error occurred fetching data from server!",
                         Toast.LENGTH_SHORT
                     ).show()
-                    swipeContainer.isRefreshing = false
+                    binding.swipeContainer.isRefreshing = false
                     return
                 }
                 val attendanceData: List<Subject> = response.body()!!
@@ -138,7 +141,7 @@ class AttendanceActivity : AppCompatActivity() {
                     }
                     updateAttendance()
                 }
-                swipeContainer.isRefreshing = false
+                binding.swipeContainer.isRefreshing = false
             }
 
             override fun onFailure(call: Call<List<Subject>>, t: Throwable) {
@@ -150,7 +153,7 @@ class AttendanceActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-                swipeContainer.isRefreshing = false
+                binding.swipeContainer.isRefreshing = false
             }
         })
     }
@@ -179,9 +182,9 @@ class AttendanceActivity : AppCompatActivity() {
 
         supportActionBar?.subtitle = getString(R.string.last_checked, timestamp)
 
-        (attendanceRecycler.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
+        (binding.attendanceRecycler.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
             false
-        attendanceRecycler.apply {
+        binding.attendanceRecycler.apply {
             this.layoutManager = LinearLayoutManager(context)
             this.adapter = ListAdapter(attendance)
             this.adapter?.notifyDataSetChanged()
