@@ -6,7 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,15 +18,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         if (BuildConfig.DEBUG) {
-            FirebaseInstanceId.getInstance().instanceId
-                .addOnCompleteListener(OnCompleteListener { task ->
-                    if (!task.isSuccessful) {
-                        Log.w(TAG, "getInstanceId failed", task.exception)
-                        return@OnCompleteListener
-                    }
-                    // Get and log new Instance ID token
-                    Log.d(TAG, "Token is ${task.result?.token}")
-                })
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get and log new Instance ID token
+                Log.d(TAG, "Token is ${task.result}")
+            })
         }
 
         val sharedPref = this.getSharedPreferences(
