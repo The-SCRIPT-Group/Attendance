@@ -18,6 +18,7 @@ import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -133,7 +134,12 @@ class AttendanceActivity : AppCompatActivity() {
                     }
                 } else {
                     val attendanceStr = gson.toJson(attendanceData)
-                    val timestamp = Calendar.getInstance().time.toString()
+                    val simpleDateFormat = SimpleDateFormat(
+                        "yyyy-mm-dd hh:mm:ss",
+                        Locale.US
+                    )
+                    val time = Calendar.getInstance().time
+                    val timestamp = simpleDateFormat.format(time)
                     with(sharedPref.edit()) {
                         putString(getString(R.string.attendance_key), attendanceStr)
                         putString(getString(R.string.timestamp_key), timestamp)

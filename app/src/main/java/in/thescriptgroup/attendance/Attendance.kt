@@ -11,54 +11,14 @@ import retrofit2.http.POST
 import java.util.concurrent.TimeUnit
 
 object ApiClient {
-    private val BASE_URL = arrayOf(
-        "h",
-        "t",
-        "t",
-        "p",
-        "s",
-        ":",
-        "/",
-        "/",
-        "p",
-        "o",
-        "s",
-        "e",
-        "i",
-        "d",
-        "o",
-        "n",
-        ".",
-        "t",
-        "h",
-        "e",
-        "s",
-        "c",
-        "r",
-        "i",
-        "p",
-        "t",
-        "g",
-        "r",
-        "o",
-        "u",
-        "p",
-        ".",
-        "i",
-        "n",
-        "/",
-        "a",
-        "p",
-        "i",
-        "/"
-    )
+    private const val BASE_URL: String = "https://tsg-poseidon.herokuapp.com/api/"
     private var retrofit: Retrofit? = null
 
     val client: Retrofit
         get() {
             if (retrofit == null) {
                 retrofit = Retrofit.Builder()
-                    .baseUrl(BASE_URL.joinToString(""))
+                    .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS).build())
                     .build()
