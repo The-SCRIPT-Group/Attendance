@@ -96,4 +96,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
+
+    implementation("androidx.navigation:navigation-fragment-ktx:${Dependencies.navigation_version}")
+    implementation ("androidx.navigation:navigation-ui-ktx:${Dependencies.navigation_version}")
 }

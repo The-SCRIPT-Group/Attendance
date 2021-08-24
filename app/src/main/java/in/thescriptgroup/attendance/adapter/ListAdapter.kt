@@ -1,5 +1,6 @@
-package `in`.thescriptgroup.attendance
+package `in`.thescriptgroup.attendance.adapter
 
+import `in`.thescriptgroup.attendance.R
 import `in`.thescriptgroup.attendance.models.Subject
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,50 +12,58 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.abs
 
-class SubjectViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
-    RecyclerView.ViewHolder(inflater.inflate(R.layout.list_item, parent, false)) {
-    private var subjectView: TextView? = null
-    private var theoryView: TextView? = null
-    private var pracView: TextView? = null
-
-    init {
-        subjectView = itemView.findViewById(R.id.subject_name)
-        theoryView = itemView.findViewById(R.id.theory_perc)
-        pracView = itemView.findViewById(R.id.prac_perc)
-    }
-
-    @SuppressLint("SetTextI18n")
-    fun bind(subject: Subject) {
-        subjectView?.text = subject.name
-
-        if (subject.in_total != 0)
-            theoryView?.text = "Internship: ${String.format(
-                "%.2f",
-                (subject.in_present / subject.in_total.toDouble()) * 100
-            )}%"
-
-        if (subject.th_total != 0)
-            theoryView?.text = "Theory: ${String.format(
-                "%.2f",
-                (subject.th_present / subject.th_total.toDouble()) * 100
-            )}%"
-        var pracs = ""
-        if (subject.pr_total != 0)
-            pracs = "Practical: ${String.format(
-                "%.2f",
-                (subject.pr_present / subject.pr_total.toDouble()) * 100
-            )}%\n"
-        if (subject.tu_total != 0)
-            pracs += "Tutorial: ${String.format(
-                "%.2f",
-                (subject.tu_present / subject.tu_total.toDouble()) * 100
-            )}%"
-        pracView?.text = pracs
-    }
-}
-
 class ListAdapter(private val list: ArrayList<Subject>) :
-    RecyclerView.Adapter<SubjectViewHolder>() {
+    RecyclerView.Adapter<ListAdapter.SubjectViewHolder>() {
+
+    class SubjectViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
+        RecyclerView.ViewHolder(inflater.inflate(R.layout.list_item, parent, false)) {
+        private var subjectView: TextView? = null
+        private var theoryView: TextView? = null
+        private var pracView: TextView? = null
+
+        init {
+            subjectView = itemView.findViewById(R.id.subject_name)
+            theoryView = itemView.findViewById(R.id.theory_perc)
+            pracView = itemView.findViewById(R.id.prac_perc)
+        }
+
+        @SuppressLint("SetTextI18n")
+        fun bind(subject: Subject) {
+            subjectView?.text = subject.name
+
+            if (subject.in_total != 0)
+                theoryView?.text = "Internship: ${
+                    String.format(
+                        "%.2f",
+                        (subject.in_present / subject.in_total.toDouble()) * 100
+                    )
+                }%"
+
+            if (subject.th_total != 0)
+                theoryView?.text = "Theory: ${
+                    String.format(
+                        "%.2f",
+                        (subject.th_present / subject.th_total.toDouble()) * 100
+                    )
+                }%"
+            var pracs = ""
+            if (subject.pr_total != 0)
+                pracs = "Practical: ${
+                    String.format(
+                        "%.2f",
+                        (subject.pr_present / subject.pr_total.toDouble()) * 100
+                    )
+                }%\n"
+            if (subject.tu_total != 0)
+                pracs += "Tutorial: ${
+                    String.format(
+                        "%.2f",
+                        (subject.tu_present / subject.tu_total.toDouble()) * 100
+                    )
+                }%"
+            pracView?.text = pracs
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -67,10 +76,12 @@ class ListAdapter(private val list: ArrayList<Subject>) :
 
         if (subject.name == "Total") {
             val (total_present, total_total) = subject.getTotal()
-            message += "Total Attendance:  $total_present / $total_total ( ${String.format(
-                "%.2f",
-                (total_present / total_total.toDouble()) * 100
-            )}% )\n\n"
+            message += "Total Attendance:  $total_present / $total_total ( ${
+                String.format(
+                    "%.2f",
+                    (total_present / total_total.toDouble()) * 100
+                )
+            }% )\n\n"
         }
 
         message += "Attended :-\n"
@@ -111,6 +122,10 @@ class ListAdapter(private val list: ArrayList<Subject>) :
         return message
     }
 
+    override fun getItemCount(): Int {
+        return list.size
+    }
+
     override fun onBindViewHolder(holder: SubjectViewHolder, position: Int) {
         holder.bind(list[position])
 
@@ -126,6 +141,4 @@ class ListAdapter(private val list: ArrayList<Subject>) :
             notifyItemChanged(position)
         }
     }
-
-    override fun getItemCount(): Int = list.size
 }

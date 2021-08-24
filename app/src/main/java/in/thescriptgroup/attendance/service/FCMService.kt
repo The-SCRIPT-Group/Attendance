@@ -1,5 +1,8 @@
-package `in`.thescriptgroup.attendance
+package `in`.thescriptgroup.attendance.service
 
+import `in`.thescriptgroup.attendance.BuildConfig
+import `in`.thescriptgroup.attendance.R
+import `in`.thescriptgroup.attendance.activity.MainActivity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -45,7 +48,7 @@ class FCMService : FirebaseMessagingService() {
      * @param messageBody FCM message body received.
      */
     private fun sendNotification(messageTitle: String?, messageBody: String?) {
-        val intent = Intent(this, AttendanceActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,

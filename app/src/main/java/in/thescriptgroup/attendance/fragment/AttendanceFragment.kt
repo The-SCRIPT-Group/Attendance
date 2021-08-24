@@ -1,18 +1,26 @@
-package `in`.thescriptgroup.attendance
+package `in`.thescriptgroup.attendance.fragment
 
-import `in`.thescriptgroup.attendance.databinding.ActivityAttendanceBinding
+import `in`.thescriptgroup.attendance.api.ApiClient
+import `in`.thescriptgroup.attendance.api.Attendance
+import `in`.thescriptgroup.attendance.R
+import `in`.thescriptgroup.attendance.adapter.ListAdapter
+import `in`.thescriptgroup.attendance.databinding.FragmentAttendanceBinding
 import `in`.thescriptgroup.attendance.models.Subject
 import `in`.thescriptgroup.attendance.models.SubjectList
 import `in`.thescriptgroup.attendance.utils.viewBinding
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.gson.Gson
@@ -23,34 +31,33 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AttendanceActivity : AppCompatActivity() {
-
-    private val binding by viewBinding(ActivityAttendanceBinding::inflate)
+class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
+    private val binding by viewBinding(FragmentAttendanceBinding::bind)
 
     lateinit var sharedPref: SharedPreferences
 
     val gson = Gson()
 
     lateinit var attendance: ArrayList<Subject>
-    lateinit var username: String
-    lateinit var password: String
+    private lateinit var username: String
+    private lateinit var password: String
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        init()
+        super.onViewCreated(view, savedInstanceState)
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setTitle(R.string.title_attendance)
-        val view = binding.root
-        setContentView(view)
-        sharedPref = this.getSharedPreferences(
+    private fun init() {
+        setHasOptionsMenu(true)
+
+        sharedPref = requireContext().getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
+
         username = sharedPref.getString(getString(R.string.username_key), "")!!
         password = sharedPref.getString(getString(R.string.password_key), "")!!
-        if (username.isEmpty() || password.isEmpty()) {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
-        Toast.makeText(this, "Pull down to refresh attendance!", Toast.LENGTH_SHORT).show()
+
+        Toast.makeText(context, "Pull down to refresh attendance!", Toast.LENGTH_SHORT).show()
         updateAttendance(update = false)
 
         binding.swipeContainer.setOnRefreshListener {
@@ -63,22 +70,30 @@ class AttendanceActivity : AppCompatActivity() {
             android.R.color.holo_orange_light,
             android.R.color.holo_red_light
         )
+
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finish()
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.attendance_settings, menu)
-        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 // The back arrow in the action bar should act the same as the back button.
-                onBackPressed()
+                requireActivity().finish()
                 true
             }
+
             R.id.menu_settings -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
+                navigateToSettings()
                 true
             }
             R.id.refresh -> {
@@ -102,7 +117,7 @@ class AttendanceActivity : AppCompatActivity() {
             ) {
                 if (response.body() == null) {
                     Toast.makeText(
-                        this@AttendanceActivity,
+                        context,
                         "Error occurred fetching data from server!",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -113,7 +128,7 @@ class AttendanceActivity : AppCompatActivity() {
                 val err: String? = attendanceData[0].response
                 if (err != null) {
                     Toast.makeText(
-                        this@AttendanceActivity,
+                        context,
                         err,
                         Toast.LENGTH_SHORT
                     ).show()
@@ -125,13 +140,7 @@ class AttendanceActivity : AppCompatActivity() {
                             putString(getString(R.string.timestamp_key), "")
                             commit()
                         }
-                        startActivity(
-                            Intent(
-                                this@AttendanceActivity,
-                                LoginActivity::class.java
-                            )
-                        )
-                        finish()
+                        navigateToLogin()
                     }
                 } else {
                     val attendanceStr = gson.toJson(attendanceData)
@@ -155,7 +164,7 @@ class AttendanceActivity : AppCompatActivity() {
                 Log.v("onFailure", t.message!!)
                 if (t.message == "timeout") {
                     Toast.makeText(
-                        this@AttendanceActivity,
+                        context,
                         "Connection timed out!",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -164,7 +173,6 @@ class AttendanceActivity : AppCompatActivity() {
             }
         })
     }
-
 
     fun updateAttendance(update: Boolean = true) {
         val timestamp = sharedPref.getString(getString(R.string.timestamp_key), "")!!
@@ -183,18 +191,29 @@ class AttendanceActivity : AppCompatActivity() {
         }
 
         if (update) {
-            Toast.makeText(this@AttendanceActivity, "Updated attendance!", Toast.LENGTH_SHORT)
+            Toast.makeText(context, "Updated attendance!", Toast.LENGTH_SHORT)
                 .show()
         }
 
-        supportActionBar?.subtitle = getString(R.string.last_checked, timestamp)
+        (activity as AppCompatActivity).supportActionBar?.subtitle =
+            getString(R.string.last_checked, timestamp)
 
         (binding.attendanceRecycler.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
             false
+
         binding.attendanceRecycler.apply {
-            this.layoutManager = LinearLayoutManager(context)
-            this.adapter = ListAdapter(attendance)
-            this.adapter?.notifyDataSetChanged()
+            layoutManager = LinearLayoutManager(context)
+            adapter = ListAdapter(attendance)
         }
+    }
+
+    private fun navigateToLogin() {
+        (activity as AppCompatActivity).supportActionBar?.subtitle = ""
+        Navigation.findNavController(requireView()).navigate(R.id.loginFragment)
+    }
+
+    private fun navigateToSettings() {
+        (activity as AppCompatActivity).supportActionBar?.subtitle = ""
+        Navigation.findNavController(requireView()).navigate(R.id.settingsFragment)
     }
 }

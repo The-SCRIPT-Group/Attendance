@@ -1,4 +1,4 @@
-package `in`.thescriptgroup.attendance
+package `in`.thescriptgroup.attendance.api
 
 import `in`.thescriptgroup.attendance.models.Subject
 import okhttp3.OkHttpClient
