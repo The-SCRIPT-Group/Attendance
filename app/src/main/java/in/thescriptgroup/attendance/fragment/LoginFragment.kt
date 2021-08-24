@@ -73,14 +73,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         "Response body is null"
                     )
                     val attendanceData: List<Subject> = response.body()!!
-                    val err: String? = attendanceData[0].response
-                    if (err != null) {
-                        Toast.makeText(
-                            context,
-                            err,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        binding.passwordInput.text.clear()
+                    val err = attendanceData[0].response
+                    if (!err.isNullOrEmpty()) {
+                        Toast.makeText(context, err, Toast.LENGTH_SHORT).show()
+                        binding.passwordInput.text?.clear()
                         binding.submit.isEnabled = true
                         return
                     }

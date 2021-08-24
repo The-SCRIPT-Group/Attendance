@@ -89,7 +89,6 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                 requireActivity().finish()
                 true
             }
-
             R.id.menu_settings -> {
                 navigateToSettings()
                 true
@@ -123,13 +122,10 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                     return
                 }
                 val attendanceData: List<Subject> = response.body()!!
-                val err: String? = attendanceData[0].response
-                if (err != null) {
-                    Toast.makeText(
-                        context,
-                        err,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                val err: String = attendanceData[0].response
+                if (!err.isNullOrEmpty()) {
+                    Toast.makeText(context, err, Toast.LENGTH_SHORT).show()
+
                     if (err == "Wrong credentials!") {
                         with(sharedPref.edit()) {
                             putString(getString(R.string.username_key), "")

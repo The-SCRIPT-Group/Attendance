@@ -1,38 +1,33 @@
 package `in`.thescriptgroup.attendance.adapter
 
 import `in`.thescriptgroup.attendance.R
+import `in`.thescriptgroup.attendance.databinding.ListItemBinding
 import `in`.thescriptgroup.attendance.models.Subject
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import javax.inject.Inject
 import kotlin.math.abs
 
-class ListAdapter(private val list: ArrayList<Subject>) :
+class ListAdapter @Inject constructor(private val list: ArrayList<Subject>) :
     RecyclerView.Adapter<ListAdapter.SubjectViewHolder>() {
 
-    class SubjectViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
-        RecyclerView.ViewHolder(inflater.inflate(R.layout.list_item, parent, false)) {
-        private var subjectView: TextView? = null
-        private var theoryView: TextView? = null
-        private var pracView: TextView? = null
+    @Inject
+    lateinit var sharedPref: SharedPreferences
 
-        init {
-            subjectView = itemView.findViewById(R.id.subject_name)
-            theoryView = itemView.findViewById(R.id.theory_perc)
-            pracView = itemView.findViewById(R.id.prac_perc)
-        }
+    class SubjectViewHolder(private val binding: ListItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
         fun bind(subject: Subject) {
-            subjectView?.text = subject.name
+            binding.subjectName.text = subject.name
 
             if (subject.in_total != 0)
-                theoryView?.text = "Internship: ${
+                binding.theoryPerc.text = "Internship: ${
                     String.format(
                         "%.2f",
                         (subject.in_present / subject.in_total.toDouble()) * 100
@@ -40,7 +35,7 @@ class ListAdapter(private val list: ArrayList<Subject>) :
                 }%"
 
             if (subject.th_total != 0)
-                theoryView?.text = "Theory: ${
+                binding.theoryPerc.text = "Theory: ${
                     String.format(
                         "%.2f",
                         (subject.th_present / subject.th_total.toDouble()) * 100
@@ -61,17 +56,18 @@ class ListAdapter(private val list: ArrayList<Subject>) :
                         (subject.tu_present / subject.tu_total.toDouble()) * 100
                     )
                 }%"
-            pracView?.text = pracs
+            binding.pracPerc.text = pracs
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return SubjectViewHolder(inflater, parent)
+        val binding = ListItemBinding.inflate(inflater, parent, false)
+        return SubjectViewHolder(binding)
     }
 
-    fun getSubjectDetails(view: View, subject: Subject): String {
-        var show_bunks: Boolean = true
+    private fun getSubjectDetails(view: View, subject: Subject): String {
+        var showBunks = true
         var message = ""
 
         if (subject.name == "Total") {
@@ -98,15 +94,12 @@ class ListAdapter(private val list: ArrayList<Subject>) :
 
         if (subject.in_total != 0) {
             message += "\t\tInternship: ${subject.in_present} / ${subject.in_total} \n"
-            show_bunks = false
+            showBunks = false
         }
 
-        if (show_bunks) {
+        if (showBunks) {
             message += "\n\n"
 
-            val sharedPref: SharedPreferences = view.context.getSharedPreferences(
-                view.context.getString(R.string.preference_file_key), Context.MODE_PRIVATE
-            )
             val desired =
                 sharedPref.getInt(view.context.getString(R.string.desired_attendance_key), 75)
             val data = subject.calculateLectures(desired)

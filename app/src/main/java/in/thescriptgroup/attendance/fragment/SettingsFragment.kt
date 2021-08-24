@@ -20,8 +20,8 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     @Inject
     lateinit var sharedPref: SharedPreferences
 
-    lateinit var desiredAttendance: EditTextPreference
-    lateinit var logout: Preference
+    private lateinit var desiredAttendance: EditTextPreference
+    private lateinit var logout: Preference
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -41,7 +41,7 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
         when (preference) {
             desiredAttendance -> {
-                val value = newValue as Int
+                val value = newValue.toString().toInt()
                 if (desiredAttendance.text.toInt() == value) {
                     return false
                 }
