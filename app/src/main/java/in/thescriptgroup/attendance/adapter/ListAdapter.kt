@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import javax.inject.Inject
 import kotlin.math.abs
@@ -27,36 +28,37 @@ class ListAdapter @Inject constructor(private val list: ArrayList<Subject>) :
             binding.subjectName.text = subject.name
 
             if (subject.in_total != 0)
-                binding.theoryPerc.text = "Internship: ${
-                    String.format(
-                        "%.2f",
-                        (subject.in_present / subject.in_total.toDouble()) * 100
-                    )
-                }%"
-
+                binding.intPerc.isVisible = true
+            binding.intPerc.text = "Internship: ${
+                String.format(
+                    "%.2f",
+                    (subject.in_present / subject.in_total.toDouble()) * 100
+                )
+            }%"
             if (subject.th_total != 0)
-                binding.theoryPerc.text = "Theory: ${
-                    String.format(
-                        "%.2f",
-                        (subject.th_present / subject.th_total.toDouble()) * 100
-                    )
-                }%"
-            var pracs = ""
+                binding.theoryPerc.isVisible = true
+            binding.theoryPerc.text = "Theory: ${
+                String.format(
+                    "%.2f",
+                    (subject.th_present / subject.th_total.toDouble()) * 100
+                )
+            }%"
             if (subject.pr_total != 0)
-                pracs = "Practical: ${
-                    String.format(
-                        "%.2f",
-                        (subject.pr_present / subject.pr_total.toDouble()) * 100
-                    )
-                }%\n"
+                binding.pracPerc.isVisible = true
+            binding.pracPerc.text = "Practical: ${
+                String.format(
+                    "%.2f",
+                    (subject.pr_present / subject.pr_total.toDouble()) * 100
+                )
+            }%"
             if (subject.tu_total != 0)
-                pracs += "Tutorial: ${
-                    String.format(
-                        "%.2f",
-                        (subject.tu_present / subject.tu_total.toDouble()) * 100
-                    )
-                }%"
-            binding.pracPerc.text = pracs
+                binding.tutPerc.isVisible = true
+            binding.tutPerc.text = "Tutorial: ${
+                String.format(
+                    "%.2f",
+                    (subject.tu_present / subject.tu_total.toDouble()) * 100
+                )
+            }%"
         }
     }
 
