@@ -19,6 +19,6 @@
         android:id="@+id/settingsFragment"
         android:name="in.thescriptgroup.attendance.fragment.SettingsFragment"
         android:label="SettingsFragment"
-        tools:layout="@layout/settings_activity"/>
+        tools:layout="@layout/fragment_settings"/>
 
 </navigation>

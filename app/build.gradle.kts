@@ -3,6 +3,8 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
     id("kotlinx-serialization")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
@@ -98,5 +100,8 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics-ktx")
 
     implementation("androidx.navigation:navigation-fragment-ktx:${Dependencies.navigation_version}")
-    implementation ("androidx.navigation:navigation-ui-ktx:${Dependencies.navigation_version}")
+    implementation("androidx.navigation:navigation-ui-ktx:${Dependencies.navigation_version}")
+
+    implementation("com.google.dagger:hilt-android:${Dependencies.hilt_version}")
+    kapt("com.google.dagger:hilt-compiler:${Dependencies.hilt_version}")
 }

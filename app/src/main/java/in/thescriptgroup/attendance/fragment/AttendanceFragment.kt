@@ -1,14 +1,13 @@
 package `in`.thescriptgroup.attendance.fragment
 
-import `in`.thescriptgroup.attendance.api.ApiClient
-import `in`.thescriptgroup.attendance.api.Attendance
 import `in`.thescriptgroup.attendance.R
 import `in`.thescriptgroup.attendance.adapter.ListAdapter
+import `in`.thescriptgroup.attendance.api.ApiClient
+import `in`.thescriptgroup.attendance.api.Attendance
 import `in`.thescriptgroup.attendance.databinding.FragmentAttendanceBinding
 import `in`.thescriptgroup.attendance.models.Subject
 import `in`.thescriptgroup.attendance.models.SubjectList
 import `in`.thescriptgroup.attendance.utils.viewBinding
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -24,16 +23,19 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     private val binding by viewBinding(FragmentAttendanceBinding::bind)
 
+    @Inject
     lateinit var sharedPref: SharedPreferences
 
     val gson = Gson()
@@ -49,10 +51,6 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
     private fun init() {
         setHasOptionsMenu(true)
-
-        sharedPref = requireContext().getSharedPreferences(
-            getString(R.string.preference_file_key), Context.MODE_PRIVATE
-        )
 
         username = sharedPref.getString(getString(R.string.username_key), "")!!
         password = sharedPref.getString(getString(R.string.password_key), "")!!

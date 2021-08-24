@@ -15,4 +15,5 @@ object Dependencies {
     const val preference_version = "1.1.1"
     const val lifecycle_version = "2.3.1"
     const val navigation_version = "2.3.5"
+    const val hilt_version = "2.38.1"
 }

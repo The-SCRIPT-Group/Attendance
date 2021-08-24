@@ -1,7 +1,6 @@
 package `in`.thescriptgroup.attendance.fragment
 
 import `in`.thescriptgroup.attendance.R
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputFilter
@@ -12,18 +11,21 @@ import androidx.navigation.Navigation
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener,
     Preference.OnPreferenceClickListener {
+    @Inject
+    lateinit var sharedPref: SharedPreferences
+
     lateinit var desiredAttendance: EditTextPreference
     lateinit var logout: Preference
-    lateinit var sharedPref: SharedPreferences
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        sharedPref = requireActivity().getSharedPreferences(
-            getString(R.string.preference_file_key),
-            Context.MODE_PRIVATE
-        )
+
         desiredAttendance =
             preferenceManager.findPreference("desired_attendance")!!
         desiredAttendance.setOnBindEditTextListener { editText ->
@@ -37,10 +39,9 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     }
 
     override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
-
         when (preference) {
             desiredAttendance -> {
-                val value = newValue.toString().toInt()
+                val value = newValue as Int
                 if (desiredAttendance.text.toInt() == value) {
                     return false
                 }

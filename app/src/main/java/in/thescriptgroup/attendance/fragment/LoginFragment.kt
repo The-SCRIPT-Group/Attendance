@@ -1,12 +1,12 @@
 package `in`.thescriptgroup.attendance.fragment
 
+import `in`.thescriptgroup.attendance.R
 import `in`.thescriptgroup.attendance.api.ApiClient
 import `in`.thescriptgroup.attendance.api.Attendance
-import `in`.thescriptgroup.attendance.R
 import `in`.thescriptgroup.attendance.databinding.FragmentLoginBinding
 import `in`.thescriptgroup.attendance.models.Subject
 import `in`.thescriptgroup.attendance.utils.viewBinding
-import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,13 +15,19 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
     private val binding by viewBinding(FragmentLoginBinding::bind)
+
+    @Inject
+    lateinit var sharedPref: SharedPreferences
 
     val gson = Gson()
 
@@ -31,19 +37,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun init() {
-        val sharedPref = requireContext().getSharedPreferences(
-            getString(R.string.preference_file_key), Context.MODE_PRIVATE
-        )
-        val username = sharedPref.getString(getString(R.string.username_key), "")!!
-        val password = sharedPref.getString(getString(R.string.password_key), "")!!
-        Log.i("lulz", "lulz")
+        val sharedUsername = sharedPref.getString(getString(R.string.username_key), "")!!
+        val sharedPassword = sharedPref.getString(getString(R.string.password_key), "")!!
 
-        if (username.isNotEmpty() || password.isNotEmpty()) {
+        if (sharedUsername.isNotEmpty() || sharedPassword.isNotEmpty()) {
             navigateToAttendance()
         }
 
         binding.submit.setOnClickListener {
-
             Toast.makeText(context, "Verifying credentials!", Toast.LENGTH_SHORT).show()
             val username = binding.usernameInput.text.toString()
             val password = binding.passwordInput.text.toString()
