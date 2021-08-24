@@ -1,7 +1,6 @@
 package `in`.thescriptgroup.attendance.fragment
 
 import `in`.thescriptgroup.attendance.R
-import `in`.thescriptgroup.attendance.api.ApiClient
 import `in`.thescriptgroup.attendance.api.Attendance
 import `in`.thescriptgroup.attendance.databinding.FragmentLoginBinding
 import `in`.thescriptgroup.attendance.models.Subject
@@ -19,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
 import java.util.*
 import javax.inject.Inject
 
@@ -28,6 +28,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     @Inject
     lateinit var sharedPref: SharedPreferences
+
+    @Inject
+    lateinit var retrofit: Retrofit
 
     val gson = Gson()
 
@@ -61,7 +64,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
             binding.submit.isEnabled = false
             val call =
-                ApiClient.client.create(Attendance::class.java)
+                retrofit.create(Attendance::class.java)
                     .getAttendance(username, password)
             call.enqueue(object : Callback<List<Subject>> {
                 override fun onResponse(

@@ -2,7 +2,6 @@ package `in`.thescriptgroup.attendance.fragment
 
 import `in`.thescriptgroup.attendance.R
 import `in`.thescriptgroup.attendance.adapter.ListAdapter
-import `in`.thescriptgroup.attendance.api.ApiClient
 import `in`.thescriptgroup.attendance.api.Attendance
 import `in`.thescriptgroup.attendance.databinding.FragmentAttendanceBinding
 import `in`.thescriptgroup.attendance.models.Subject
@@ -27,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -37,6 +37,9 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
     @Inject
     lateinit var sharedPref: SharedPreferences
+
+    @Inject
+    lateinit var retrofit: Retrofit
 
     val gson = Gson()
 
@@ -103,7 +106,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
     private fun fetchAndUpdateAttendance() {
         val call =
-            ApiClient.client.create(Attendance::class.java).getAttendance(username, password)
+            retrofit.create(Attendance::class.java).getAttendance(username, password)
 
         binding.swipeContainer.isRefreshing = true
 
