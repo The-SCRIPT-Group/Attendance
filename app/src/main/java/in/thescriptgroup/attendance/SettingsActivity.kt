@@ -13,7 +13,6 @@ import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 
-
 class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +43,7 @@ class SettingsActivity : AppCompatActivity() {
         lateinit var sharedPref: SharedPreferences
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
-            sharedPref = activity!!.getSharedPreferences(
+            sharedPref = requireActivity().getSharedPreferences(
                 getString(R.string.preference_file_key),
                 Context.MODE_PRIVATE
             )
@@ -103,7 +102,7 @@ class SettingsActivity : AppCompatActivity() {
                             LoginActivity::class.java
                         ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                     )
-                    activity!!.finish()
+                    requireActivity().finish()
                     return true
                 }
                 else -> {

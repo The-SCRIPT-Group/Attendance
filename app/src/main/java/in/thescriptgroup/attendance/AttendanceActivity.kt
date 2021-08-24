@@ -3,6 +3,7 @@ package `in`.thescriptgroup.attendance
 import `in`.thescriptgroup.attendance.databinding.ActivityAttendanceBinding
 import `in`.thescriptgroup.attendance.models.Subject
 import `in`.thescriptgroup.attendance.models.SubjectList
+import `in`.thescriptgroup.attendance.utils.viewBinding
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -24,6 +25,8 @@ import java.util.*
 
 class AttendanceActivity : AppCompatActivity() {
 
+    private val binding by viewBinding(ActivityAttendanceBinding::inflate)
+
     lateinit var sharedPref: SharedPreferences
 
     val gson = Gson()
@@ -32,12 +35,10 @@ class AttendanceActivity : AppCompatActivity() {
     lateinit var username: String
     lateinit var password: String
 
-    private lateinit var binding: ActivityAttendanceBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTitle(R.string.title_attendance)
-        binding = ActivityAttendanceBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         sharedPref = this.getSharedPreferences(

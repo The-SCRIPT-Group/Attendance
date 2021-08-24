@@ -2,6 +2,7 @@ package `in`.thescriptgroup.attendance
 
 import `in`.thescriptgroup.attendance.databinding.ActivityLoginBinding
 import `in`.thescriptgroup.attendance.models.Subject
+import `in`.thescriptgroup.attendance.utils.viewBinding
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -18,11 +19,10 @@ class LoginActivity : AppCompatActivity() {
 
     val gson = Gson()
 
-    private lateinit var binding: ActivityLoginBinding
+    private val binding by viewBinding(ActivityLoginBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
