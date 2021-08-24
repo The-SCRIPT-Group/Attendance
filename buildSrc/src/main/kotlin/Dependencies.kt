@@ -13,4 +13,5 @@ object Dependencies {
     const val gson_version = "2.8.8"
     const val firebase_bom_version = "28.4.0"
     const val preference_version = "1.1.1"
+    const val lifecycle_version = "2.3.1"
 }

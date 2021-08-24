@@ -72,7 +72,6 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    implementation(platform("com.google.firebase:firebase-bom:${Dependencies.firebase_bom_version}"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Dependencies.kotlin_version}")
     implementation("androidx.core:core-ktx:${Dependencies.core_ktx_version}")
     implementation("androidx.appcompat:appcompat:${Dependencies.appcompat_version}")
@@ -87,8 +86,14 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:${Dependencies.kotlinx_version}")
     implementation("com.google.code.gson:gson:${Dependencies.gson_version}")
+
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${Dependencies.lifecycle_version}")
+    implementation("androidx.lifecycle:lifecycle-common-java8:${Dependencies.lifecycle_version}")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Dependencies.lifecycle_version}")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:${Dependencies.lifecycle_version}")
+
+    implementation(platform("com.google.firebase:firebase-bom:${Dependencies.firebase_bom_version}"))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
-
 }
