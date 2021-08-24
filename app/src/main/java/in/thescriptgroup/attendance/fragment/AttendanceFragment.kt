@@ -126,7 +126,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                 }
                 val attendanceData: List<Subject> = response.body()!!
                 val err: String = attendanceData[0].response
-                if (!err.isNullOrEmpty()) {
+                if (err.isNotEmpty()) {
                     Toast.makeText(context, err, Toast.LENGTH_SHORT).show()
 
                     if (err == "Wrong credentials!") {
