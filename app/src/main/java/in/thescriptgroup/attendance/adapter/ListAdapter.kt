@@ -4,21 +4,37 @@ import `in`.thescriptgroup.attendance.R
 import `in`.thescriptgroup.attendance.databinding.ListItemBinding
 import `in`.thescriptgroup.attendance.models.Subject
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import javax.inject.Inject
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 import kotlin.math.abs
 
-class ListAdapter @Inject constructor(private val list: ArrayList<Subject>) :
+class ListAdapter(
+    context: Context,
+    private val list: ArrayList<Subject>
+) :
     RecyclerView.Adapter<ListAdapter.SubjectViewHolder>() {
 
-    @Inject
-    lateinit var sharedPref: SharedPreferences
+    var sharedPref: SharedPreferences
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface MyEntryPoint {
+        fun getSharedPref(): SharedPreferences
+    }
+
+    init {
+        val entryPoint = EntryPointAccessors.fromApplication(context, MyEntryPoint::class.java)
+        sharedPref = entryPoint.getSharedPref()
+    }
 
     class SubjectViewHolder(private val binding: ListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -28,37 +44,36 @@ class ListAdapter @Inject constructor(private val list: ArrayList<Subject>) :
             binding.subjectName.text = subject.name
 
             if (subject.in_total != 0)
-                binding.intPerc.isVisible = true
-            binding.intPerc.text = "Internship: ${
-                String.format(
-                    "%.2f",
-                    (subject.in_present / subject.in_total.toDouble()) * 100
-                )
-            }%"
+                binding.theoryPerc.text = "Internship: ${
+                    String.format(
+                        "%.2f",
+                        (subject.in_present / subject.in_total.toDouble()) * 100
+                    )
+                }%"
+
             if (subject.th_total != 0)
-                binding.theoryPerc.isVisible = true
-            binding.theoryPerc.text = "Theory: ${
-                String.format(
-                    "%.2f",
-                    (subject.th_present / subject.th_total.toDouble()) * 100
-                )
-            }%"
+                binding.theoryPerc.text = "Theory: ${
+                    String.format(
+                        "%.2f",
+                        (subject.th_present / subject.th_total.toDouble()) * 100
+                    )
+                }%"
+            var pracs = ""
             if (subject.pr_total != 0)
-                binding.pracPerc.isVisible = true
-            binding.pracPerc.text = "Practical: ${
-                String.format(
-                    "%.2f",
-                    (subject.pr_present / subject.pr_total.toDouble()) * 100
-                )
-            }%"
+                pracs = "Practical: ${
+                    String.format(
+                        "%.2f",
+                        (subject.pr_present / subject.pr_total.toDouble()) * 100
+                    )
+                }%\n"
             if (subject.tu_total != 0)
-                binding.tutPerc.isVisible = true
-            binding.tutPerc.text = "Tutorial: ${
-                String.format(
-                    "%.2f",
-                    (subject.tu_present / subject.tu_total.toDouble()) * 100
-                )
-            }%"
+                pracs += "Tutorial: ${
+                    String.format(
+                        "%.2f",
+                        (subject.tu_present / subject.tu_total.toDouble()) * 100
+                    )
+                }%"
+            binding.pracPerc.text = pracs
         }
     }
 

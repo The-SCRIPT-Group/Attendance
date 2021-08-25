@@ -200,7 +200,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
         binding.attendanceRecycler.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = ListAdapter(attendance)
+            adapter = ListAdapter(requireContext(), attendance)
         }
     }
 
