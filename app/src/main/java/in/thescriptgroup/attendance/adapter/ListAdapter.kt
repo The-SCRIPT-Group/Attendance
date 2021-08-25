@@ -3,27 +3,24 @@ package `in`.thescriptgroup.attendance.adapter
 import `in`.thescriptgroup.attendance.R
 import `in`.thescriptgroup.attendance.databinding.ListItemBinding
 import `in`.thescriptgroup.attendance.models.Subject
-import android.annotation.SuppressLint
+import `in`.thescriptgroup.attendance.utils.Utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlin.math.abs
 
-class ListAdapter(
-    context: Context,
-    private val list: ArrayList<Subject>
-) :
+class ListAdapter(private val context: Context) :
     RecyclerView.Adapter<ListAdapter.SubjectViewHolder>() {
 
-    var sharedPref: SharedPreferences
+    private var list: List<Subject> = listOf()
+
+    private var sharedPref: SharedPreferences
 
     @EntryPoint
     @InstallIn(SingletonComponent::class)
@@ -36,100 +33,130 @@ class ListAdapter(
         sharedPref = entryPoint.getSharedPref()
     }
 
-    class SubjectViewHolder(private val binding: ListItemBinding) :
+    class SubjectViewHolder(private val binding: ListItemBinding, private val context: Context) :
         RecyclerView.ViewHolder(binding.root) {
 
-        @SuppressLint("SetTextI18n")
-        fun bind(subject: Subject) {
+        fun bind(subject: Subject, desiredAttendance: Int) {
             binding.subjectName.text = subject.name
 
-            if (subject.in_total != 0)
-                binding.theoryPerc.text = "Internship: ${
-                    String.format(
-                        "%.2f",
-                        (subject.in_present / subject.in_total.toDouble()) * 100
-                    )
-                }%"
+            if (!subject.isExpanded) {
+                hideExpandedItems()
+            }
 
-            if (subject.th_total != 0)
-                binding.theoryPerc.text = "Theory: ${
-                    String.format(
-                        "%.2f",
-                        (subject.th_present / subject.th_total.toDouble()) * 100
+            itemView.setOnClickListener {
+                if (subject.isExpanded) {
+                    subject.isExpanded = false
+                    hideExpandedItems()
+                } else {
+                    subject.isExpanded = true
+                    binding.attended.visibility = View.VISIBLE
+                    if (subject.th_total != 0) {
+                        binding.attendedTheory.visibility = View.VISIBLE
+                        binding.bunkTheory.visibility = View.VISIBLE
+                    }
+                    if (subject.pr_total != 0) {
+                        binding.attendedPractical.visibility = View.VISIBLE
+                        binding.bunkPractical.visibility = View.VISIBLE
+                    }
+                    if (subject.tu_total != 0) {
+                        binding.attendedTutorial.visibility = View.VISIBLE
+                        binding.bunkTutorial.visibility = View.VISIBLE
+                    }
+                    if (subject.in_total != 0) {
+                        binding.attendedInternship.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            if (subject.in_total != 0) {
+                binding.intPerc.text = context.getString(
+                    R.string.internship, Utils.average(subject.in_present, subject.th_total)
+                )
+                binding.attendedInternship.text = context.getString(
+                    R.string.attended_internship, subject.in_present, subject.in_total
+                )
+                binding.intPerc.visibility = View.VISIBLE
+            } else {
+                binding.intPerc.visibility = View.GONE
+            }
+
+            if (subject.th_total != 0) {
+                binding.theoryPerc.text = context.getString(
+                    R.string.theory, Utils.average(subject.th_present, subject.th_total)
+                )
+                binding.attendedTheory.text = context.getString(
+                    R.string.attended_theory, subject.th_present, subject.th_total
+                )
+                binding.bunkTheory.text =
+                    Utils.bunkIt(
+                        subject.th_present,
+                        subject.th_total,
+                        desiredAttendance,
+                        context,
+                        context.getString(R.string.theory_name)
                     )
-                }%"
-            var pracs = ""
-            if (subject.pr_total != 0)
-                pracs = "Practical: ${
-                    String.format(
-                        "%.2f",
-                        (subject.pr_present / subject.pr_total.toDouble()) * 100
+                binding.theoryPerc.visibility = View.VISIBLE
+            } else {
+                binding.theoryPerc.visibility = View.GONE
+            }
+
+            if (subject.pr_total != 0) {
+                binding.pracPerc.text = context.getString(
+                    R.string.practical, Utils.average(subject.pr_present, subject.pr_total)
+                )
+                binding.attendedPractical.text = context.getString(
+                    R.string.attended_practical, subject.pr_present, subject.pr_total
+                )
+                binding.bunkPractical.text =
+                    Utils.bunkIt(
+                        subject.pr_present,
+                        subject.pr_total,
+                        desiredAttendance,
+                        context,
+                        context.getString(R.string.practical_name)
                     )
-                }%\n"
-            if (subject.tu_total != 0)
-                pracs += "Tutorial: ${
-                    String.format(
-                        "%.2f",
-                        (subject.tu_present / subject.tu_total.toDouble()) * 100
+                binding.pracPerc.visibility = View.VISIBLE
+            } else {
+                binding.pracPerc.visibility = View.GONE
+            }
+
+            if (subject.tu_total != 0) {
+                binding.tutPerc.text = context.getString(
+                    R.string.tutorial, Utils.average(subject.tu_present, subject.tu_total)
+                )
+                binding.attendedTutorial.text = context.getString(
+                    R.string.attended_tutorial, subject.tu_present, subject.tu_total
+                )
+                binding.bunkTutorial.text =
+                    Utils.bunkIt(
+                        subject.tu_present,
+                        subject.tu_total,
+                        desiredAttendance,
+                        context,
+                        context.getString(R.string.tutorial_name)
                     )
-                }%"
-            binding.pracPerc.text = pracs
+                binding.tutPerc.visibility = View.VISIBLE
+            } else {
+                binding.tutPerc.visibility = View.GONE
+            }
+        }
+
+        private fun hideExpandedItems() {
+            binding.attended.visibility = View.GONE
+            binding.attendedTheory.visibility = View.GONE
+            binding.attendedPractical.visibility = View.GONE
+            binding.attendedTutorial.visibility = View.GONE
+            binding.attendedInternship.visibility = View.GONE
+            binding.bunkTheory.visibility = View.GONE
+            binding.bunkPractical.visibility = View.GONE
+            binding.bunkTutorial.visibility = View.GONE
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ListItemBinding.inflate(inflater, parent, false)
-        return SubjectViewHolder(binding)
-    }
-
-    private fun getSubjectDetails(view: View, subject: Subject): String {
-        var showBunks = true
-        var message = ""
-
-        if (subject.name == "Total") {
-            val (total_present, total_total) = subject.getTotal()
-            message += "Total Attendance:  $total_present / $total_total ( ${
-                String.format(
-                    "%.2f",
-                    (total_present / total_total.toDouble()) * 100
-                )
-            }% )\n\n"
-        }
-
-        message += "Attended :-\n"
-
-        if (subject.th_total != 0) {
-            message += "\t\tTheory: ${subject.th_present} / ${subject.th_total} \n"
-        }
-        if (subject.pr_total != 0) {
-            message += "\t\tPractical: ${subject.pr_present} / ${subject.pr_total} \n"
-        }
-        if (subject.tu_total != 0) {
-            message += "\t\tTutorial: ${subject.tu_present} / ${subject.tu_total} \n"
-        }
-
-        if (subject.in_total != 0) {
-            message += "\t\tInternship: ${subject.in_present} / ${subject.in_total} \n"
-            showBunks = false
-        }
-
-        if (showBunks) {
-            message += "\n\n"
-
-            val desired =
-                sharedPref.getInt(view.context.getString(R.string.desired_attendance_key), 75)
-            val data = subject.calculateLectures(desired)
-            for (key in data.keys) {
-                message += "You " +
-                        when {
-                            data[key]!! < 0 -> "need to attend ${abs(data[key]!!)}"
-                            data[key]!! > 0 -> "can bunk ${data[key]}"
-                            else -> "cannot bunk any"
-                        } + " $key \n"
-            }
-        }
-        return message
+        return SubjectViewHolder(binding, context)
     }
 
     override fun getItemCount(): Int {
@@ -137,18 +164,13 @@ class ListAdapter(
     }
 
     override fun onBindViewHolder(holder: SubjectViewHolder, position: Int) {
-        holder.bind(list[position])
+        val desiredAttendance =
+            sharedPref.getInt(context.getString(R.string.desired_attendance_key), 75)
+        holder.bind(list[position], desiredAttendance)
+    }
 
-        holder.itemView.setOnClickListener { view ->
-            val subject = list[position]
-            val message = getSubjectDetails(view, subject)
-
-            val subjectExpanded = holder.itemView.findViewById<TextView>(R.id.subject_details)
-            subjectExpanded.text = message
-            subjectExpanded.visibility =
-                if (subjectExpanded.visibility == View.GONE) View.VISIBLE else View.GONE
-
-            notifyItemChanged(position)
-        }
+    fun setList(attendance: List<Subject>) {
+        list = attendance
+        notifyDataSetChanged()
     }
 }

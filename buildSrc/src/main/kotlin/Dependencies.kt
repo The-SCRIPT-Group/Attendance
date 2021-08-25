@@ -10,10 +10,10 @@ object Dependencies {
     const val retrofit_version = "2.9.0"
     const val legacy_version = "1.0.0"
     const val kotlinx_version = "1.2.2"
-    const val gson_version = "2.8.8"
     const val firebase_bom_version = "28.4.0"
     const val preference_version = "1.1.1"
     const val lifecycle_version = "2.3.1"
     const val navigation_version = "2.3.5"
     const val hilt_version = "2.38.1"
+    const val moshi_version = "1.12.0"
 }

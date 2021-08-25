@@ -1,4 +1,4 @@
-import java.util.Properties
+import java.util.*
 
 plugins {
     id("com.android.application")
@@ -84,10 +84,9 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:${Dependencies.constraint_layout_version}")
 
     implementation("com.squareup.retrofit2:retrofit:${Dependencies.retrofit_version}")
-    implementation("com.squareup.retrofit2:converter-gson:${Dependencies.retrofit_version}")
+    implementation("com.squareup.retrofit2:converter-moshi:${Dependencies.retrofit_version}")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:${Dependencies.kotlinx_version}")
-    implementation("com.google.code.gson:gson:${Dependencies.gson_version}")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:${Dependencies.lifecycle_version}")
     implementation("androidx.lifecycle:lifecycle-common-java8:${Dependencies.lifecycle_version}")
@@ -104,4 +103,6 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:${Dependencies.hilt_version}")
     kapt("com.google.dagger:hilt-compiler:${Dependencies.hilt_version}")
+
+    implementation("com.squareup.moshi:moshi-kotlin:${Dependencies.moshi_version}")
 }

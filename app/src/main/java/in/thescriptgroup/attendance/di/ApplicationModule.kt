@@ -1,18 +1,22 @@
 package `in`.thescriptgroup.attendance.di
 
 import `in`.thescriptgroup.attendance.R
-import `in`.thescriptgroup.attendance.api.ApiClient
+import `in`.thescriptgroup.attendance.api.AttendanceService
+import `in`.thescriptgroup.attendance.api.AttendanceService.ApiClient.BASE_URL
+import `in`.thescriptgroup.attendance.models.Subject
 import android.content.Context
 import android.content.SharedPreferences
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -29,10 +33,24 @@ object ApplicationModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(): Retrofit =
+    fun provideRetrofit(): AttendanceService =
         Retrofit.Builder()
-            .baseUrl(ApiClient.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS).build())
+            .baseUrl(BASE_URL)
+            .addConverterFactory(
+                MoshiConverterFactory.create(providesMoshi())
+            )
             .build()
+            .create(AttendanceService::class.java)
+
+    @Singleton
+    @Provides
+    fun providesMoshi(): Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+
+    @Singleton
+    @Provides
+    fun providesShippedCheatAdapter(): JsonAdapter<List<Subject>> {
+        val subjectListType =
+            Types.newParameterizedType(List::class.java, Subject::class.java)
+        return providesMoshi().adapter(subjectListType)
+    }
 }

@@ -9,16 +9,16 @@
         android:id="@+id/loginFragment"
         android:name="in.thescriptgroup.attendance.fragment.LoginFragment"
         android:label="LoginFragment"
-        tools:layout="@layout/fragment_login"/>
+        tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/attendanceFragment"
         android:name="in.thescriptgroup.attendance.fragment.AttendanceFragment"
         android:label="AttendanceFragment"
-        tools:layout="@layout/fragment_attendance"/>
+        tools:layout="@layout/fragment_attendance" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="in.thescriptgroup.attendance.fragment.SettingsFragment"
         android:label="SettingsFragment"
-        tools:layout="@layout/fragment_settings"/>
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>

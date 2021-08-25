@@ -29,4 +29,28 @@
     <string name="set_desired_attendance">Set the desired attendance for calculation</string>
     <string name="app_version">v1.3</string>
     <string name="submit_hint">@string/title_login</string>
+
+    <string name="details_missing">Please enter the details!</string>
+    <string name="invalid_id">Invalid ID!</string>
+    <string name="interent_issue">Please check your internet connection</string>
+    <string name="pull_down_refresh">Pull down to refresh attendance!</string>
+
+    <string name="internship">Internship: %1$.2f%%</string>
+    <string name="tutorial">Tutorial: %1$.2f%%</string>
+    <string name="theory">Theory: %1$.2f%%</string>
+    <string name="practical">Practical: %1$.2f%%</string>
+
+    <string name="attended">Attended :-</string>
+    <string name="attended_theory">Theory %1$d / %2$d</string>
+    <string name="attended_practical">Practical %1$d / %2$d</string>
+    <string name="attended_tutorial">Tutorial %1$d / %2$d</string>
+    <string name="attended_internship">Internship %1$d / %2$d</string>
+
+    <string name="bunk">You can bunk %1$d %2$s</string>
+    <string name="attend">You need to attend %1$d %2$s</string>
+    <string name="theory_name">Lectures</string>
+    <string name="practical_name">Practicals</string>
+    <string name="tutorial_name">Tutorials</string>
+    <string name="living_on_the_edge">You cannot bunk any %1$s</string>
+
 </resources>
