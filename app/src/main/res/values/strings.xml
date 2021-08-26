@@ -5,7 +5,6 @@
     <string name="saved_password" />
     <string name="enter_username">Enter ERP ID</string>
     <string name="enter_password">Enter ERP Password</string>
-    <string name="preference_file_key">attendance_pref_key</string>
     <string name="last_checked">Last updated at %1$s\n</string>
     <string name="desired_attendance_key">desired_attendance</string>
     <string name="settings">Settings</string>
@@ -49,4 +48,7 @@
     <string name="tutorial_name">Tutorials</string>
     <string name="living_on_the_edge">You cannot bunk any %1$s</string>
 
+    <string name="attendance_percentage_hint">Between 1 – 99</string>
+    <string name="toast_attendance_percentage">Desired attendance set to %1$d</string>
+    <string name="logout_toast">Logging out!</string>
 </resources>

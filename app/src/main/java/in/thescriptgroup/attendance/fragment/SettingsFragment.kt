@@ -32,8 +32,10 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
         desiredAttendance.setOnBindEditTextListener { editText ->
             editText.inputType = InputType.TYPE_CLASS_NUMBER
             editText.filters = arrayOf(InputFilter.LengthFilter(2))
-            editText.hint = "Between 0 - 99"
+            editText.hint = getString(R.string.attendance_percentage_hint)
+            if (editText.text.toString() == "0") editText.setText("1")
         }
+        desiredAttendance.summary = "75"
         desiredAttendance.onPreferenceChangeListener = this
         logout = preferenceManager.findPreference("logout")!!
         logout.onPreferenceClickListener = this
@@ -42,7 +44,9 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
         when (preference) {
             desiredAttendance -> {
-                val value = newValue.toString().toInt()
+                var value = newValue.toString().toInt()
+                if (value == 0) value = 1
+                preference.summary = value.toString()
                 if (desiredAttendance.text.toInt() == value) {
                     return false
                 }
@@ -51,13 +55,12 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
                     commit()
                 }
                 Toast.makeText(
-                    activity,
-                    "Desired attendance set to $value!",
+                    context,
+                    getString(R.string.toast_attendance_percentage, value),
                     Toast.LENGTH_SHORT
                 ).show()
                 return true
             }
-
             else -> {
                 return false
             }
@@ -74,7 +77,7 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
                     putString(Constants.timestamp_key, "")
                     commit()
                 }
-                Toast.makeText(activity, "Logging out!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.logout_toast), Toast.LENGTH_SHORT).show()
                 navigateToLogin()
                 return true
             }

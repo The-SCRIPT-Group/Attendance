@@ -5,8 +5,7 @@
         <EditTextPreference
             app:defaultValue="75"
             app:key="@string/desired_attendance_key"
-            app:title="@string/set_desired_attendance"
-            app:useSimpleSummaryProvider="true" />
+            app:title="@string/set_desired_attendance" />
 
     </PreferenceCategory>
 

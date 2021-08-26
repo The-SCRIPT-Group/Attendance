@@ -1,9 +1,9 @@
 package `in`.thescriptgroup.attendance.di
 
-import `in`.thescriptgroup.attendance.R
 import `in`.thescriptgroup.attendance.api.AttendanceService
 import `in`.thescriptgroup.attendance.api.AttendanceService.ApiClient.BASE_URL
 import `in`.thescriptgroup.attendance.models.Subject
+import `in`.thescriptgroup.attendance.utils.Constants
 import android.content.Context
 import android.content.SharedPreferences
 import com.squareup.moshi.JsonAdapter
@@ -26,10 +26,7 @@ object ApplicationModule {
     @Singleton
     @Provides
     fun provideSharedPrefs(@ApplicationContext context: Context): SharedPreferences =
-        context.getSharedPreferences(
-            context.getString(R.string.preference_file_key),
-            Context.MODE_PRIVATE
-        )
+        context.getSharedPreferences(Constants.preference_file_key, Context.MODE_PRIVATE)
 
     @Singleton
     @Provides
