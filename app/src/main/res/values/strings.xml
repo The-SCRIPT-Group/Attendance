@@ -41,10 +41,10 @@
     <string name="practical">Practical: %1$.2f%%</string>
 
     <string name="attended">Attended :-</string>
-    <string name="attended_theory">Theory %1$d / %2$d</string>
-    <string name="attended_practical">Practical %1$d / %2$d</string>
-    <string name="attended_tutorial">Tutorial %1$d / %2$d</string>
-    <string name="attended_internship">Internship %1$d / %2$d</string>
+    <string name="attended_theory">Theory: %1$d / %2$d</string>
+    <string name="attended_practical">Practical: %1$d / %2$d</string>
+    <string name="attended_tutorial">Tutorial: %1$d / %2$d</string>
+    <string name="attended_internship">Internship: %1$d / %2$d</string>
 
     <string name="bunk">You can bunk %1$d %2$s</string>
     <string name="attend">You need to attend %1$d %2$s</string>
