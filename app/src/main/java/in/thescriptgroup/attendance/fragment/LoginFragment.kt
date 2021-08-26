@@ -4,6 +4,7 @@ import `in`.thescriptgroup.attendance.R
 import `in`.thescriptgroup.attendance.databinding.FragmentLoginBinding
 import `in`.thescriptgroup.attendance.models.Subject
 import `in`.thescriptgroup.attendance.models.SubjectViewModel
+import `in`.thescriptgroup.attendance.utils.Constants
 import `in`.thescriptgroup.attendance.utils.Utils
 import `in`.thescriptgroup.attendance.utils.viewBinding
 import android.content.SharedPreferences
@@ -37,8 +38,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun init() {
-        val sharedUsername = sharedPref.getString(getString(R.string.username_key), "")!!
-        val sharedPassword = sharedPref.getString(getString(R.string.password_key), "")!!
+        val sharedUsername = sharedPref.getString(Constants.username_key, "")!!
+        val sharedPassword = sharedPref.getString(Constants.password_key, "")!!
 
         if (sharedUsername.isNotEmpty() || sharedPassword.isNotEmpty()) {
             navigateToAttendance()
@@ -90,10 +91,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun savePerf(username: String, password: String, subject: List<Subject>) {
         with(sharedPref.edit()) {
-            Utils.updateTime(this, requireContext())
-            putString(getString(R.string.username_key), username)
-            putString(getString(R.string.password_key), password)
-            putString(getString(R.string.attendance_key), adapter.toJson(subject))
+            Utils.updateTime(this)
+            putString(Constants.username_key, username)
+            putString(Constants.password_key, password)
+            putString(Constants.attendance_key, adapter.toJson(subject))
             commit()
         }
     }

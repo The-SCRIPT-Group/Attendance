@@ -9,11 +9,11 @@ import java.util.*
 
 object Utils {
 
-    fun updateTime(editor: SharedPreferences.Editor, context: Context) {
+    fun updateTime(editor: SharedPreferences.Editor) {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US)
         val time = Calendar.getInstance().time
         val timestamp = simpleDateFormat.format(time)
-        editor.putString(context.getString(R.string.timestamp_key), timestamp).commit()
+        editor.putString(Constants.timestamp_key, timestamp).commit()
     }
 
     fun average(a: Int, b: Int): Double = (a.toDouble() / b.toDouble()) * 100

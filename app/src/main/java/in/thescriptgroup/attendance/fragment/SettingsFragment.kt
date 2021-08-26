@@ -1,6 +1,7 @@
 package `in`.thescriptgroup.attendance.fragment
 
 import `in`.thescriptgroup.attendance.R
+import `in`.thescriptgroup.attendance.utils.Constants
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputFilter
@@ -67,10 +68,10 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
         when (preference) {
             logout -> {
                 with(sharedPref.edit()) {
-                    putString(getString(R.string.username_key), "")
-                    putString(getString(R.string.password_key), "")
-                    putString(getString(R.string.attendance_key), "")
-                    putString(getString(R.string.timestamp_key), "")
+                    putString(Constants.username_key, "")
+                    putString(Constants.password_key, "")
+                    putString(Constants.attendance_key, "")
+                    putString(Constants.timestamp_key, "")
                     commit()
                 }
                 Toast.makeText(activity, "Logging out!", Toast.LENGTH_SHORT).show()

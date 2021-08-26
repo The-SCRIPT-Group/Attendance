@@ -5,6 +5,7 @@ import `in`.thescriptgroup.attendance.adapter.ListAdapter
 import `in`.thescriptgroup.attendance.databinding.FragmentAttendanceBinding
 import `in`.thescriptgroup.attendance.models.Subject
 import `in`.thescriptgroup.attendance.models.SubjectViewModel
+import `in`.thescriptgroup.attendance.utils.Constants
 import `in`.thescriptgroup.attendance.utils.Utils
 import `in`.thescriptgroup.attendance.utils.viewBinding
 import android.content.SharedPreferences
@@ -51,8 +52,8 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     private fun init() {
         setHasOptionsMenu(true)
 
-        username = sharedPref.getString(getString(R.string.username_key), "")!!
-        password = sharedPref.getString(getString(R.string.password_key), "")!!
+        username = sharedPref.getString(Constants.username_key, "")!!
+        password = sharedPref.getString(Constants.password_key, "")!!
 
         Toast.makeText(context, getText(R.string.pull_down_refresh), Toast.LENGTH_SHORT).show()
 
@@ -87,7 +88,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                 } else {
                     listAdapter.setList(it)
                     attendance = it
-                    Utils.updateTime(sharedPref.edit(), requireContext())
+                    Utils.updateTime(sharedPref.edit())
                     updateAttendance()
                 }
             } else {
@@ -131,18 +132,12 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
 
     private fun updateAttendance() {
-        val timestamp = sharedPref.getString(getString(R.string.timestamp_key), "")!!
+        val timestamp = sharedPref.getString(Constants.timestamp_key, "")!!
 
-        sharedPref.edit().putString(getString(R.string.attendance_key), adapter.toJson(attendance))
-            .apply()
+        sharedPref.edit().putString(Constants.attendance_key, adapter.toJson(attendance)).apply()
 
         (activity as AppCompatActivity).supportActionBar?.subtitle =
             getString(R.string.last_checked, timestamp)
-
-        // (binding.attendanceRecycler.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
-        //    false
-
-
     }
 
     private fun navigateToSettings() {
