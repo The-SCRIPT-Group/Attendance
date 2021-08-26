@@ -92,6 +92,11 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                     updateAttendance()
                 }
             } else {
+                val savedJson =  sharedPref.getString(Constants.attendance_key, null)
+                if (savedJson != null) {
+                    listAdapter.setList(adapter.fromJson(savedJson)!!)
+                }
+
                 Toast.makeText(context, getText(R.string.interent_issue), Toast.LENGTH_LONG)
                     .show()
             }
