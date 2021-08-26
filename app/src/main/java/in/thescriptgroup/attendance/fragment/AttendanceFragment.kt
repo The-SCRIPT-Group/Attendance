@@ -37,12 +37,9 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     lateinit var adapter: JsonAdapter<List<Subject>>
 
     private var refreshing = false
-    lateinit var attendance: List<Subject>
 
     private lateinit var username: String
     private lateinit var password: String
-
-    private lateinit var listAdapter: ListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         init()
@@ -72,7 +69,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             )
         }
 
-        listAdapter = ListAdapter(requireContext())
+        val listAdapter = ListAdapter(requireContext())
         binding.attendanceRecycler.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = listAdapter
@@ -87,12 +84,11 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                     Toast.makeText(context, it[0].response, Toast.LENGTH_LONG).show()
                 } else {
                     listAdapter.setList(it)
-                    attendance = it
                     Utils.updateTime(sharedPref.edit())
-                    updateAttendance()
+                    updateAttendance(it)
                 }
             } else {
-                val savedJson =  sharedPref.getString(Constants.attendance_key, null)
+                val savedJson = sharedPref.getString(Constants.attendance_key, null)
                 if (savedJson != null) {
                     listAdapter.setList(adapter.fromJson(savedJson)!!)
                 }
@@ -136,7 +132,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     }
 
 
-    private fun updateAttendance() {
+    private fun updateAttendance(attendance: List<Subject>) {
         val timestamp = sharedPref.getString(Constants.timestamp_key, "")!!
 
         sharedPref.edit().putString(Constants.attendance_key, adapter.toJson(attendance)).apply()

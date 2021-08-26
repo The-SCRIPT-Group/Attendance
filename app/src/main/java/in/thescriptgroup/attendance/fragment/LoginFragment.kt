@@ -43,6 +43,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         if (sharedUsername.isNotEmpty() || sharedPassword.isNotEmpty()) {
             navigateToAttendance()
+            return
         }
 
         binding.submit.setOnClickListener {
