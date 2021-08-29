@@ -33,7 +33,7 @@ android {
         multiDexEnabled = true
     }
 
-    val keystoreConfigFile = rootProject.layout.projectDirectory.file("key.properties")
+    val keystoreConfigFile = rootProject.layout.projectDirectory.file("keystore.properties")
     if (keystoreConfigFile.asFile.exists()) {
         val contents = providers.fileContents(keystoreConfigFile).asText.forUseAtConfigurationTime()
         val keystoreProperties = Properties()
