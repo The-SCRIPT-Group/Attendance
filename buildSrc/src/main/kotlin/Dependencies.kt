@@ -1,5 +1,5 @@
 object Dependencies {
-    const val kotlin_version = "1.5.21"
+    const val kotlin_version = "1.5.30"
     const val gradle_version = "7.0.1"
     const val gms_version = "4.3.10"
     const val firebase_version = "2.7.1"
@@ -16,4 +16,5 @@ object Dependencies {
     const val navigation_version = "2.3.5"
     const val hilt_version = "2.38.1"
     const val moshi_version = "1.12.0"
+    const val r8_version = "3.0.65"
 }

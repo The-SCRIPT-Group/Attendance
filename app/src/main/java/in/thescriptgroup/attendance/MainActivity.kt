@@ -1,6 +1,5 @@
-package `in`.thescriptgroup.attendance.activity
+package `in`.thescriptgroup.attendance
 
-import `in`.thescriptgroup.attendance.BuildConfig
 import `in`.thescriptgroup.attendance.databinding.ActivityMainBinding
 import `in`.thescriptgroup.attendance.utils.viewBinding
 import android.os.Bundle
@@ -15,8 +14,6 @@ class MainActivity : AppCompatActivity() {
 
     private val binding by viewBinding(ActivityMainBinding::inflate)
 
-    private val TAG = this::class.qualifiedName
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -24,12 +21,16 @@ class MainActivity : AppCompatActivity() {
         if (BuildConfig.DEBUG) {
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
-                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                    Log.w(
+                        this::class.qualifiedName,
+                        "Fetching FCM registration token failed",
+                        task.exception
+                    )
                     return@OnCompleteListener
                 }
 
                 // Get and log new Instance ID token
-                Log.d(TAG, "Token is ${task.result}")
+                Log.d(this::class.qualifiedName, "Token is ${task.result}")
             })
         }
     }

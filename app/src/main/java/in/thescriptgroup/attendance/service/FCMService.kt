@@ -1,8 +1,8 @@
 package `in`.thescriptgroup.attendance.service
 
 import `in`.thescriptgroup.attendance.BuildConfig
+import `in`.thescriptgroup.attendance.MainActivity
 import `in`.thescriptgroup.attendance.R
-import `in`.thescriptgroup.attendance.activity.MainActivity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent

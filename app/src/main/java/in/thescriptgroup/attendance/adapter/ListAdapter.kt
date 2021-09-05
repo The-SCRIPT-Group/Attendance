@@ -4,34 +4,19 @@ import `in`.thescriptgroup.attendance.R
 import `in`.thescriptgroup.attendance.databinding.ListItemBinding
 import `in`.thescriptgroup.attendance.models.Subject
 import `in`.thescriptgroup.attendance.utils.Utils
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.components.SingletonComponent
+import javax.inject.Inject
 
-class ListAdapter(private val context: Context) :
+class ListAdapter @Inject constructor(private val preferences: SharedPreferences) :
     RecyclerView.Adapter<ListAdapter.SubjectViewHolder>() {
 
     private var list: List<Subject> = listOf()
-
-    private var sharedPref: SharedPreferences
-
-    @EntryPoint
-    @InstallIn(SingletonComponent::class)
-    interface MyEntryPoint {
-        fun getSharedPref(): SharedPreferences
-    }
-
-    init {
-        val entryPoint = EntryPointAccessors.fromApplication(context, MyEntryPoint::class.java)
-        sharedPref = entryPoint.getSharedPref()
-    }
 
     class SubjectViewHolder(private val binding: ListItemBinding, private val context: Context) :
         RecyclerView.ViewHolder(binding.root) {
@@ -156,19 +141,21 @@ class ListAdapter(private val context: Context) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ListItemBinding.inflate(inflater, parent, false)
-        return SubjectViewHolder(binding, context)
+        return SubjectViewHolder(binding, parent.context)
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+    override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: SubjectViewHolder, position: Int) {
         val desiredAttendance =
-            sharedPref.getInt(context.getString(R.string.desired_attendance_key), 75)
+            preferences.getInt(
+                holder.itemView.context.getString(R.string.desired_attendance_key),
+                75
+            )
         holder.bind(list[position], desiredAttendance)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setList(attendance: List<Subject>) {
         list = attendance
         notifyDataSetChanged()

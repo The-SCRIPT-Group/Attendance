@@ -36,6 +36,9 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     @Inject
     lateinit var adapter: JsonAdapter<List<Subject>>
 
+    @Inject
+    lateinit var listAdapter: ListAdapter
+
     private var refreshing = false
 
     private lateinit var username: String
@@ -69,7 +72,6 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             )
         }
 
-        val listAdapter = ListAdapter(requireContext())
         binding.attendanceRecycler.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = listAdapter

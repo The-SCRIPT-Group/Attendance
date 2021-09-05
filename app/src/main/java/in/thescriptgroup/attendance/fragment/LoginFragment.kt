@@ -13,7 +13,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.squareup.moshi.JsonAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +30,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     @Inject
     lateinit var adapter: JsonAdapter<List<Subject>>
 
-    private val viewModel: SubjectViewModel by activityViewModels()
+    private val viewModel: SubjectViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         init()
@@ -38,10 +38,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun init() {
-        val sharedUsername = sharedPref.getString(Constants.username_key, "")!!
-        val sharedPassword = sharedPref.getString(Constants.password_key, "")!!
+        val sharedUsername = sharedPref.getString(Constants.username_key, null)
+        val sharedPassword = sharedPref.getString(Constants.password_key, null)
 
-        if (sharedUsername.isNotEmpty() || sharedPassword.isNotEmpty()) {
+        if (!sharedUsername.isNullOrEmpty() || !sharedPassword.isNullOrEmpty()) {
             navigateToAttendance()
             return
         }
