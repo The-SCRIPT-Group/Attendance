@@ -5,6 +5,8 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
--keep class in.thescriptgroup.attendance.models.Subject { *; }
+-keepattributes Signature
+-keep public class in.thescriptgroup.attendance.models.Subject { *; }
 -keep class com.google.android.gms.** { *; }
 -keep class com.google.firebase.** { *; }
+-keep class in.thescriptgroup.attendance.service.FCMService { *; }

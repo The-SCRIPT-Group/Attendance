@@ -53,7 +53,7 @@ android {
         getByName("release") {
             isShrinkResources = true
             isMinifyEnabled = true
-            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
+//            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
         }
     }
 

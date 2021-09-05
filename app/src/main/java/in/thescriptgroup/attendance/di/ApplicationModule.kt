@@ -22,7 +22,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ApplicationModule {
-
     @Singleton
     @Provides
     fun provideSharedPrefs(@ApplicationContext context: Context): SharedPreferences =
@@ -30,24 +29,26 @@ object ApplicationModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(): AttendanceService =
+    fun provideRetrofit(moshi: Moshi): Retrofit =
         Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(
-                MoshiConverterFactory.create(providesMoshi())
-            )
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
-            .create(AttendanceService::class.java)
 
     @Singleton
     @Provides
-    fun providesMoshi(): Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    fun provideApi(retrofit: Retrofit): AttendanceService =
+        retrofit.create(AttendanceService::class.java)
 
     @Singleton
     @Provides
-    fun providesShippedCheatAdapter(): JsonAdapter<List<Subject>> {
+    fun provideMoshi(): Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+
+    @Singleton
+    @Provides
+    fun provideShippedCheatAdapter(moshi: Moshi): JsonAdapter<List<Subject>> {
         val subjectListType =
             Types.newParameterizedType(List::class.java, Subject::class.java)
-        return providesMoshi().adapter(subjectListType)
+        return moshi.adapter(subjectListType)
     }
 }
