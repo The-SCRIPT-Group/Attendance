@@ -3,13 +3,8 @@
     <string name="action_settings">Settings</string>
     <string name="saved_username" />
     <string name="saved_password" />
-    <string name="username_key">username</string>
-    <string name="password_key">password</string>
     <string name="enter_username">Enter ERP ID</string>
     <string name="enter_password">Enter ERP Password</string>
-    <string name="preference_file_key">attendance_pref_key</string>
-    <string name="attendance_key">attendance_key</string>
-    <string name="timestamp_key">timestamp_key</string>
     <string name="last_checked">Last updated at %1$s\n</string>
     <string name="desired_attendance_key">desired_attendance</string>
     <string name="settings">Settings</string>
@@ -17,6 +12,7 @@
     <string name="title_login">Login</string>
     <string name="title_attendance">Attendance</string>
     <string name="refresh">Refresh</string>
+    <string name="logo_desc">tsg logo</string>
 
     <!-- Preference Titles -->
     <string name="attendance_settings_header">Attendance</string>
@@ -28,4 +24,31 @@
     <string name="set_desired_attendance">Set the desired attendance for calculation</string>
     <string name="app_version">v1.3</string>
     <string name="submit_hint">@string/title_login</string>
+
+    <string name="details_missing">Please enter the details!</string>
+    <string name="invalid_id">Invalid ID!</string>
+    <string name="interent_issue">Please check your internet connection</string>
+    <string name="pull_down_refresh">Pull down to refresh attendance!</string>
+
+    <string name="internship">Internship: %1$.2f%%</string>
+    <string name="tutorial">Tutorial: %1$.2f%%</string>
+    <string name="theory">Theory: %1$.2f%%</string>
+    <string name="practical">Practical: %1$.2f%%</string>
+
+    <string name="attended">Attended :-</string>
+    <string name="attended_theory">Theory: %1$d / %2$d</string>
+    <string name="attended_practical">Practical: %1$d / %2$d</string>
+    <string name="attended_tutorial">Tutorial: %1$d / %2$d</string>
+    <string name="attended_internship">Internship: %1$d / %2$d</string>
+
+    <string name="bunk">You can bunk %1$d %2$s</string>
+    <string name="attend">You need to attend %1$d %2$s</string>
+    <string name="theory_name">Lectures</string>
+    <string name="practical_name">Practicals</string>
+    <string name="tutorial_name">Tutorials</string>
+    <string name="living_on_the_edge">You cannot bunk any %1$s</string>
+
+    <string name="attendance_percentage_hint">Between 1 – 99</string>
+    <string name="toast_attendance_percentage">Desired attendance set to %1$d</string>
+    <string name="logout_toast">Logging out!</string>
 </resources>
